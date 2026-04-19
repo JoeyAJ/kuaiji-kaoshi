@@ -1,0 +1,298 @@
+
+<h2 class="sr-only">재무관리 중간고사 Apple Watch Ultra 2 카드 뷰어, 챕터 및 유형별 필터링 지원</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{display:flex;flex-direction:column;align-items:center;padding:1.2rem 0;gap:12px;font-family:var(--font-sans)}
+.row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:420px}
+.pill{font-size:11.5px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.pill.active-ch{background:#1c3a28;color:#4ade80;border-color:#2d5a3d}
+.pill.active-concept{background:#1a2a3a;color:#60a5fa;border-color:#1e4060}
+.pill.active-calc{background:#2a1a3a;color:#c084fc;border-color:#4a2a6a}
+.pill.active-all{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary)}
+.ultra-wrap{position:relative;display:inline-block}
+.ultra-frame{width:210px;height:258px;border-radius:52px;background:#080808;padding:7px;box-shadow:0 0 0 2px #1a1a1a,0 0 0 4px #0d0d0d;position:relative}
+.ultra-screen{width:100%;height:100%;border-radius:44px;overflow:hidden;background:#0a0a0a;display:flex;flex-direction:column}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:9px 15px 5px;flex-shrink:0}
+.wtime{color:#fff;font-size:12px;font-weight:600;letter-spacing:0.03em}
+.type-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-concept{background:#60a5fa}
+.dot-calc{background:#c084fc}
+.card-scroll{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:0 13px 8px}
+.ch-label{font-size:8.5px;color:#555;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:3px;flex-shrink:0}
+.q-block{background:#111;border-radius:8px;padding:7px 9px;margin-bottom:6px;border-left:2px solid #333;flex-shrink:0}
+.q-label{font-size:8px;color:#555;letter-spacing:0.06em;margin-bottom:2px}
+.q-text{font-size:11px;color:#b0b0b0;line-height:1.45}
+.a-block{background:#0f1f0f;border-radius:8px;padding:7px 9px;border-left:3px solid #22c55e;flex:1;overflow:hidden}
+.a-label{font-size:8px;color:#22c55e;letter-spacing:0.06em;font-weight:600;margin-bottom:3px}
+.a-text{font-size:11.5px;color:#e2e8f0;line-height:1.5}
+.a-text .key{color:#4ade80;font-weight:600}
+.a-text .num{color:#fbbf24;font-weight:600}
+.a-text .debit{color:#67e8f9;font-family:var(--font-mono);font-size:10px}
+.a-text .credit{color:#f9a8d4;font-family:var(--font-mono);font-size:10px;padding-left:14px}
+.a-text .entry{line-height:1.7;display:block}
+.a-text .formula{color:#c084fc;font-weight:600}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;padding:5px 13px 8px;flex-shrink:0}
+.nbtn{width:30px;height:30px;border-radius:50%;background:#161616;border:0.5px solid #2a2a2a;color:#888;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.nbtn:hover{background:#222;color:#ccc}
+.nbtn:disabled{opacity:0.2;cursor:default}
+.ndots{display:flex;gap:3px;align-items:center}
+.ndot{width:4px;height:4px;border-radius:50%;background:#2a2a2a;transition:all 0.2s}
+.ndot.on{background:#fff;width:5px;height:5px}
+.ncount{font-size:9.5px;color:#444}
+.btn-crown{position:absolute;right:-7px;top:38px;width:7px;height:36px;background:#1a1a1a;border-radius:3px;border:0.5px solid #2a2a2a}
+.btn-action{position:absolute;right:-7px;bottom:68px;width:7px;height:22px;background:#f97316;border-radius:3px;border:0.5px solid #ea6010}
+.btn-left{position:absolute;left:-7px;top:90px;width:7px;height:28px;background:#1a1a1a;border-radius:3px;border:0.5px solid #2a2a2a}
+.footer-info{font-size:11px;color:var(--color-text-tertiary);text-align:center}
+.list-wrap{width:100%;max-width:380px;display:flex;flex-direction:column;gap:7px}
+.lc{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:9px 13px;cursor:pointer;transition:all 0.12s}
+.lc:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
+.lc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:3px}
+.lc-title{font-size:12.5px;font-weight:500;color:var(--color-text-primary);line-height:1.3}
+.lc-badge{font-size:10px;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.bc{background:var(--color-background-success);color:var(--color-text-success)}
+.bq{background:var(--color-background-info);color:var(--color-text-info)}
+.lc-ch{font-size:11px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="app">
+  <div class="row" id="chRow"></div>
+  <div class="row" id="typeRow"></div>
+  <div class="ultra-wrap" id="watchPanel" style="display:none">
+    <div class="ultra-frame">
+      <div class="ultra-screen">
+        <div class="top-bar">
+          <span class="wtime" id="wt">9:41</span>
+          <div class="type-dot" id="typeDot"></div>
+        </div>
+        <div class="card-scroll">
+          <div class="ch-label" id="wCh"></div>
+          <div class="q-block">
+            <div class="q-label">Q 문제</div>
+            <div class="q-text" id="wQ"></div>
+          </div>
+          <div class="a-block">
+            <div class="a-label">A 정답</div>
+            <div class="a-text" id="wA"></div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="nbtn" id="pb" onclick="nav(-1)">‹</button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div class="ndots" id="ndots"></div>
+            <div class="ncount" id="nc"></div>
+          </div>
+          <button class="nbtn" id="nb" onclick="nav(1)">›</button>
+        </div>
+      </div>
+      <div class="btn-crown"></div>
+      <div class="btn-action"></div>
+      <div class="btn-left"></div>
+    </div>
+  </div>
+  <div id="listPanel" class="list-wrap"></div>
+  <div class="row">
+    <button class="pill" id="vw" onclick="setView('watch')">Watch 미리보기</button>
+    <button class="pill active-all" id="vl" onclick="setView('list')">전체 목록</button>
+  </div>
+  <div class="footer-info" id="fi"></div>
+</div>
+
+<script>
+const CARDS=[
+  {ch:1,chName:'I. 레몬 시장',type:'concept',
+   q:'정보 비대칭 하에서 재무제표와 감사의견의 역할은?',
+   a:'<span class="key">재무제표</span> → 신호 전달 (Signaling)<br><span class="key">감사의견</span> → 선별 기능 (Screening)'},
+  {ch:1,chName:'I. 레몬 시장',type:'concept',
+   q:'오렌지(우량 자산)에 공정가격으로 투자해야 하는가?',
+   a:'<span class="key">아니오.</span><br>공정가격 매입 → 이익 없음<br>이익 원리: <span class="formula">저가 매입 → 고가 매도</span><br>오렌지든 레몬이든 동일'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'회계의 분류: 외부 vs 내부 정보이용자',
+   a:'외부 → <span class="key">재무회계</span> (주주, 채권자)<br>내부 → <span class="key">관리회계</span> (경영자, 종업원)'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'4가지 감사의견은 무엇인가?',
+   a:'① <span class="key">적정의견</span><br>② <span class="key">한정의견</span><br>③ <span class="key">부적정의견</span><br>④ <span class="key">의견거절</span>'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'기업의 3가지 경영활동은?',
+   a:'① <span class="key">영업활동</span><br>② <span class="key">투자활동</span><br>③ <span class="key">재무활동</span>'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'회계등식 및 자본의 구성',
+   a:'<span class="formula">자산 = 부채 + 자본</span><br>자본 = 납입자본 + 이익잉여금<br>　　　+ 기타포괄손익누계액<br>기말이익잉여금 = 기초 + <span class="key">당기순이익</span> − <span class="num">배당금</span>'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'총포괄이익과 자본의 관계',
+   a:'<span class="formula">총포괄이익</span> = 당기순이익 + 기타포괄이익<br>기초자본 + 총포괄이익 = <span class="key">기말자본</span>'},
+  {ch:2,chName:'II. 회계학 입문',type:'concept',
+   q:'IFRS와 기존 회계기준의 근본적 차이',
+   a:'기존: <span class="num">규칙중심</span> Rule-based<br>IFRS: <span class="key">원칙중심</span> Principle-based'},
+  {ch:3,chName:'III. 회계순환',type:'concept',
+   q:'수익과 비용의 인식 원칙은?',
+   a:'<span class="key">발생주의</span> (현금주의 아님)<br>해당 기간의 수익과 비용을 대응<br>→ <span class="formula">수익·비용 대응의 원칙</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'2026.1.1 현금 5억으로 토지 구입, 분개는?',
+   a:'<span class="entry debit">(차) 토지　　　500,000,000</span><span class="entry credit">(대) 현금　　　500,000,000</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'2025.7.1 1억 차입, 연이율 4%, 12/31 이자비용 분개는?',
+   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 이자비용　　2,000,000</span><span class="entry credit">(대) 미지급이자　2,000,000</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'은행 입장: 동일 대출 12/31 이자수익 분개는?',
+   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 미수이자수익 2,000,000</span><span class="entry credit">(대) 이자수익　　2,000,000</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'9.1 보험료 120만 선급, 12/31 수정분개(4개월 경과)?',
+   a:'9.1: <span class="entry debit">(차) 선급보험료 1,200,000</span><span class="entry credit">(대) 현금　　 1,200,000</span>12.31: <span class="num">120만×4/12=40만</span><br><span class="entry debit">(차) 보험료　　　400,000</span><span class="entry credit">(대) 선급보험료　400,000</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'보험사가 보험료 120만 수령, 12/31 수정분개는?',
+   a:'9.1: <span class="entry debit">(차) 현금　　 1,200,000</span><span class="entry credit">(대) 선수보험수익 1,200,000</span>12.31: <span class="entry debit">(차) 선수보험수익 400,000</span><span class="entry credit">(대) 보험수익　　400,000</span>'},
+  {ch:3,chName:'III. 회계순환',type:'calc',
+   q:'9.1 소모품 80만 구입, 12/31 잔액 30만, 분개는?',
+   a:'9.1: <span class="entry debit">(차) 소모품　　800,000</span><span class="entry credit">(대) 현금　　　800,000</span>12.31 사용액 <span class="num">50만</span>:<br><span class="entry debit">(차) 소모품비　500,000</span><span class="entry credit">(대) 소모품　　500,000</span>'},
+  {ch:4,chName:'IV. 현금·수취채권',type:'concept',
+   q:'매출채권·매입채무 구성 및 순매출액 계산',
+   a:'<span class="key">매출채권</span> = 외상매출금 + 받을어음<br><span class="key">매입채무</span> = 외상매입금 + 지급어음<br>순매출액 = 총매출액 − 에누리 − 환입 − 할인'},
+  {ch:4,chName:'IV. 현금·수취채권',type:'concept',
+   q:'선급비용·선수수익·미수수익·미지급비용의 정의',
+   a:'<span class="key">선급비용</span>: 미래 비용 미리 지급<br><span class="key">선수수익</span>: 미래 수익 미리 수취<br><span class="key">미수수익</span>: 인식했으나 미수취<br><span class="key">미지급비용</span>: 인식했으나 미지급'},
+  {ch:4,chName:'IV. 현금·수취채권',type:'concept',
+   q:'선급금·선수금·예수금의 차이',
+   a:'<span class="key">선급금</span>: 구매 전 일부 선지급<br><span class="key">선수금</span>: 판매 전 현금 미리 수취<br><span class="key">예수금</span>: 부가세·근로소득세 등<br>　　　　일시 보관 유동부채'},
+  {ch:5,chName:'V. 재고자산',type:'concept',
+   q:'재고자산 기본 공식',
+   a:'기초재고 + 당기매입 = <span class="key">판매가능재고</span><br>판매가능재고 − 기말재고 = <span class="key">매출원가</span><br>매출 − 매출원가 = <span class="formula">매출총이익</span>'},
+  {ch:5,chName:'V. 재고자산',type:'concept',
+   q:'재고자산 원가배분 4가지 방법',
+   a:'① <span class="key">개별법</span>: 취득단가 직접 추적<br>② <span class="key">선입선출법 (FIFO)</span><br>③ <span class="key">후입선출법 (LIFO)</span><br>④ <span class="key">가중평균법</span>'},
+  {ch:5,chName:'V. 재고자산',type:'concept',
+   q:'물가 상승 시 당기순이익이 가장 높은 방법은?',
+   a:'<span class="key">선입선출법 (FIFO)</span><br>이유: 과거 저가 원가가 먼저 매출원가로<br>전환 → 이익 최대화'},
+  {ch:5,chName:'V. 재고자산',type:'concept',
+   q:'재고자산 측정 원칙',
+   a:'취득원가 vs 순실현가치(NRV) 중<br><span class="formula">낮은 금액</span>으로 계상<br>예) 원가 10만, NRV 8만 → <span class="num">8만원</span> 계상'},
+  {ch:5,chName:'V. 재고자산',type:'calc',
+   q:'재고자산 취득원가: 매입100만, 부대비20만, 에누리10만, 환출5만, 할인2만',
+   a:'1,000,000 + 200,000<br>− 100,000 − 50,000 − 20,000<br>= <span class="key">630,000원</span>'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'concept',
+   q:'자본적 지출 vs 수익적 지출',
+   a:'<span class="key">자본적 지출</span>: 미래 경제적 효익 유입 가능<br>→ 자산 증가로 처리<br><span class="key">수익적 지출</span>: 일상적 수선·유지비<br>→ 당기비용으로 처리'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'concept',
+   q:'영업권(Goodwill)의 정의와 회계처리',
+   a:'초과이익 창출능력의 화폐 표시<br><span class="formula">영업권 = 매수대가 − 순자산 공정가치</span><br>영업권은 <span class="key">상각하지 않음</span><br>매년 <span class="num">손상평가</span> 수행'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'calc',
+   q:'유형자산 취득원가: 기계100만, 매입관련비20만, 추정복구비10만',
+   a:'100,000 + 20,000 + 10,000<br>= <span class="key">130,000원</span>'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'calc',
+   q:'정액법 감가상각: 취득원가 1천만, 내용연수 4년, 잔존가치 200만, 12/31 분개?',
+   a:'<span class="num">(1,000만−200만)÷4 = 200만/년</span><br><span class="entry debit">(차) 감가상각비　　2,000,000</span><span class="entry credit">(대) 감가상각누계액 2,000,000</span>'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'calc',
+   q:'재평가모형: 토지 취득원가 1억, 공정가치 1.5억, 분개는?',
+   a:'증가액 <span class="num">5,000만원</span><br><span class="entry debit">(차) 토지　　　　50,000,000</span><span class="entry credit">(대) 재평가이익　50,000,000</span>→ 자본 항목: <span class="key">기타포괄손익누계액</span>'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'calc',
+   q:'자산손상: 장부가치 6백만, 순공정가치 4백만, 사용가치 5백만, 분개?',
+   a:'회수가능액 = Max(4M, 5M) = <span class="num">5M</span><br>손상차손 = 6M − 5M = <span class="key">100만원</span><br><span class="entry debit">(차) 유형자산손상차손 1,000,000</span><span class="entry credit">(대) 손상차손누계액　1,000,000</span>'},
+  {ch:6,chName:'VI. 유형·무형자산',type:'calc',
+   q:'영업권 계산: 매수대가 3억, 피인수기업 자산6억/부채4억',
+   a:'순자산 공정가치 = 6억 − 4억 = <span class="num">2억</span><br>영업권 = 3억 − 2억 = <span class="key">100,000,000원</span>'},
+];
+
+const CHAPTERS=[...new Set(CARDS.map(c=>c.ch))];
+let selCh='all',selType='all',filtered=[...CARDS],curIdx=0,curView='list';
+
+function buildFilters(){
+  const cr=document.getElementById('chRow');
+  cr.innerHTML='';
+  const ab=mkPill('전체 챕터','all','ch');ab.classList.add('active-all');cr.appendChild(ab);
+  CHAPTERS.forEach(ch=>{
+    const c=CARDS.find(x=>x.ch===ch);
+    const short=c.chName.replace(/^[IVX]+\.\s*/,'').slice(0,5);
+    cr.appendChild(mkPill('Ch'+ch+' '+short,ch,'ch'));
+  });
+  const tr=document.getElementById('typeRow');
+  tr.innerHTML='';
+  const ab2=mkPill('전체 유형','all','type');ab2.classList.add('active-all');tr.appendChild(ab2);
+  tr.appendChild(mkPill('📘 개념','concept','type'));
+  tr.appendChild(mkPill('🔢 계산','calc','type'));
+}
+
+function mkPill(label,val,group){
+  const b=document.createElement('button');
+  b.className='pill';b.textContent=label;
+  b.onclick=()=>setFilter(val,group,b);
+  return b;
+}
+
+function setFilter(val,group,btn){
+  if(group==='ch'){
+    selCh=val;
+    document.querySelectorAll('#chRow .pill').forEach(b=>{b.className='pill'});
+    btn.className='pill '+(val==='all'?'active-all':'active-ch');
+  } else {
+    selType=val;
+    document.querySelectorAll('#typeRow .pill').forEach(b=>{b.className='pill'});
+    btn.className='pill '+(val==='all'?'active-all':val==='concept'?'active-concept':'active-calc');
+  }
+  applyFilter();
+}
+
+function applyFilter(){
+  filtered=CARDS.filter(c=>(selCh==='all'||c.ch===selCh)&&(selType==='all'||c.type===selType));
+  curIdx=0;
+  if(curView==='watch')renderCard();else renderList();
+  document.getElementById('fi').textContent='총 '+filtered.length+'장';
+}
+
+function nav(d){
+  curIdx=Math.max(0,Math.min(filtered.length-1,curIdx+d));
+  renderCard();
+}
+
+function renderCard(){
+  if(!filtered.length){
+    document.getElementById('wQ').textContent='해당 조건의 카드 없음';
+    document.getElementById('wA').textContent='';
+    return;
+  }
+  const c=filtered[curIdx];
+  document.getElementById('wCh').textContent=c.chName;
+  document.getElementById('wQ').innerHTML=c.q;
+  document.getElementById('wA').innerHTML=c.a;
+  document.getElementById('typeDot').className='type-dot '+(c.type==='concept'?'dot-concept':'dot-calc');
+  document.getElementById('pb').disabled=curIdx===0;
+  document.getElementById('nb').disabled=curIdx===filtered.length-1;
+  document.getElementById('nc').textContent=(curIdx+1)+' / '+filtered.length;
+  const dots=document.getElementById('ndots');
+  dots.innerHTML='';
+  const total=Math.min(filtered.length,5);
+  const start=Math.max(0,Math.min(curIdx-2,filtered.length-5));
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='ndot'+(start+i===curIdx?' on':'');
+    dots.appendChild(d);
+  }
+  const now=new Date();
+  document.getElementById('wt').textContent=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
+}
+
+function renderList(){
+  const lp=document.getElementById('listPanel');
+  lp.innerHTML='';
+  if(!filtered.length){lp.innerHTML='<div style="color:var(--color-text-tertiary);font-size:13px;text-align:center;padding:1rem">해당 조건의 카드 없음</div>';return;}
+  filtered.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='lc';
+    const short=c.q.length>38?c.q.slice(0,38)+'…':c.q;
+    d.innerHTML=`<div class="lc-top"><span class="lc-title">${short}</span><span class="lc-badge ${c.type==='concept'?'bc':'bq'}">${c.type==='concept'?'개념':'계산'}</span></div><div class="lc-ch">${c.chName}</div>`;
+    d.onclick=()=>{curIdx=i;setView('watch');};
+    lp.appendChild(d);
+  });
+}
+
+function setView(v){
+  curView=v;
+  document.getElementById('watchPanel').style.display=v==='watch'?'inline-block':'none';
+  document.getElementById('listPanel').style.display=v==='list'?'flex':'none';
+  document.getElementById('vw').className='pill '+(v==='watch'?'active-all':'');
+  document.getElementById('vl').className='pill '+(v==='list'?'active-all':'');
+  if(v==='watch')renderCard();else renderList();
+}
+
+buildFilters();
+setView('list');
+applyFilter();
+</script>
