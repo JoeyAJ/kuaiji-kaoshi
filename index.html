@@ -1,101 +1,164 @@
-
-<h2 class="sr-only">재무관리 중간고사 Apple Watch Ultra 2 카드 뷰어, 챕터 및 유형별 필터링 지원</h2>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>회계학 카드</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-.app{display:flex;flex-direction:column;align-items:center;padding:1.2rem 0;gap:12px;font-family:var(--font-sans)}
-.row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:420px}
-.pill{font-size:11.5px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s;white-space:nowrap}
-.pill.active-ch{background:#1c3a28;color:#4ade80;border-color:#2d5a3d}
-.pill.active-concept{background:#1a2a3a;color:#60a5fa;border-color:#1e4060}
-.pill.active-calc{background:#2a1a3a;color:#c084fc;border-color:#4a2a6a}
-.pill.active-all{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary)}
-.ultra-wrap{position:relative;display:inline-block}
-.ultra-frame{width:210px;height:258px;border-radius:52px;background:#080808;padding:7px;box-shadow:0 0 0 2px #1a1a1a,0 0 0 4px #0d0d0d;position:relative}
-.ultra-screen{width:100%;height:100%;border-radius:44px;overflow:hidden;background:#0a0a0a;display:flex;flex-direction:column}
-.top-bar{display:flex;justify-content:space-between;align-items:center;padding:9px 15px 5px;flex-shrink:0}
-.wtime{color:#fff;font-size:12px;font-weight:600;letter-spacing:0.03em}
-.type-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.dot-concept{background:#60a5fa}
-.dot-calc{background:#c084fc}
-.card-scroll{flex:1;display:flex;flex-direction:column;overflow:hidden;padding:0 13px 8px}
-.ch-label{font-size:8.5px;color:#555;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:3px;flex-shrink:0}
-.q-block{background:#111;border-radius:8px;padding:7px 9px;margin-bottom:6px;border-left:2px solid #333;flex-shrink:0}
-.q-label{font-size:8px;color:#555;letter-spacing:0.06em;margin-bottom:2px}
-.q-text{font-size:11px;color:#b0b0b0;line-height:1.45}
-.a-block{background:#0f1f0f;border-radius:8px;padding:7px 9px;border-left:3px solid #22c55e;flex:1;overflow:hidden}
-.a-label{font-size:8px;color:#22c55e;letter-spacing:0.06em;font-weight:600;margin-bottom:3px}
-.a-text{font-size:11.5px;color:#e2e8f0;line-height:1.5}
-.a-text .key{color:#4ade80;font-weight:600}
-.a-text .num{color:#fbbf24;font-weight:600}
-.a-text .debit{color:#67e8f9;font-family:var(--font-mono);font-size:10px}
-.a-text .credit{color:#f9a8d4;font-family:var(--font-mono);font-size:10px;padding-left:14px}
-.a-text .entry{line-height:1.7;display:block}
-.a-text .formula{color:#c084fc;font-weight:600}
-.nav-bar{display:flex;justify-content:space-between;align-items:center;padding:5px 13px 8px;flex-shrink:0}
-.nbtn{width:30px;height:30px;border-radius:50%;background:#161616;border:0.5px solid #2a2a2a;color:#888;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
-.nbtn:hover{background:#222;color:#ccc}
-.nbtn:disabled{opacity:0.2;cursor:default}
-.ndots{display:flex;gap:3px;align-items:center}
-.ndot{width:4px;height:4px;border-radius:50%;background:#2a2a2a;transition:all 0.2s}
-.ndot.on{background:#fff;width:5px;height:5px}
-.ncount{font-size:9.5px;color:#444}
-.btn-crown{position:absolute;right:-7px;top:38px;width:7px;height:36px;background:#1a1a1a;border-radius:3px;border:0.5px solid #2a2a2a}
-.btn-action{position:absolute;right:-7px;bottom:68px;width:7px;height:22px;background:#f97316;border-radius:3px;border:0.5px solid #ea6010}
-.btn-left{position:absolute;left:-7px;top:90px;width:7px;height:28px;background:#1a1a1a;border-radius:3px;border:0.5px solid #2a2a2a}
-.footer-info{font-size:11px;color:var(--color-text-tertiary);text-align:center}
-.list-wrap{width:100%;max-width:380px;display:flex;flex-direction:column;gap:7px}
-.lc{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:9px 13px;cursor:pointer;transition:all 0.12s}
-.lc:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
-.lc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:3px}
-.lc-title{font-size:12.5px;font-weight:500;color:var(--color-text-primary);line-height:1.3}
-.lc-badge{font-size:10px;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
-.bc{background:var(--color-background-success);color:var(--color-text-success)}
-.bq{background:var(--color-background-info);color:var(--color-text-info)}
-.lc-ch{font-size:11px;color:var(--color-text-tertiary)}
-</style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:#0a0a0a;color:#f0f0f0;
+  font-family:-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  min-height:100vh;font-size:16px;
+}
 
-<div class="app">
-  <div class="row" id="chRow"></div>
-  <div class="row" id="typeRow"></div>
-  <div class="ultra-wrap" id="watchPanel" style="display:none">
-    <div class="ultra-frame">
-      <div class="ultra-screen">
-        <div class="top-bar">
-          <span class="wtime" id="wt">9:41</span>
-          <div class="type-dot" id="typeDot"></div>
-        </div>
-        <div class="card-scroll">
-          <div class="ch-label" id="wCh"></div>
-          <div class="q-block">
-            <div class="q-label">Q 문제</div>
-            <div class="q-text" id="wQ"></div>
-          </div>
-          <div class="a-block">
-            <div class="a-label">A 정답</div>
-            <div class="a-text" id="wA"></div>
-          </div>
-        </div>
-        <div class="nav-bar">
-          <button class="nbtn" id="pb" onclick="nav(-1)">‹</button>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-            <div class="ndots" id="ndots"></div>
-            <div class="ncount" id="nc"></div>
-          </div>
-          <button class="nbtn" id="nb" onclick="nav(1)">›</button>
-        </div>
-      </div>
-      <div class="btn-crown"></div>
-      <div class="btn-action"></div>
-      <div class="btn-left"></div>
+/* ── 화면 전환 ── */
+.screen{display:none;min-height:100vh;padding:20px 16px 40px}
+.screen.active{display:block}
+
+/* ── 홈 화면 ── */
+.home-title{
+  font-size:22px;font-weight:700;
+  color:#4ade80;text-align:center;
+  margin-bottom:6px;margin-top:8px;
+}
+.home-sub{font-size:15px;color:#555;text-align:center;margin-bottom:28px}
+.section-label{font-size:13px;color:#555;letter-spacing:0.06em;margin-bottom:10px}
+
+.ch-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.ch-btn{
+  background:#141414;border:1px solid #2a2a2a;
+  border-radius:16px;padding:16px 18px;
+  cursor:pointer;transition:border-color 0.15s;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ch-btn:active{border-color:#4ade80}
+.ch-btn-left{text-align:left}
+.ch-num{font-size:13px;color:#555;margin-bottom:3px}
+.ch-name{font-size:17px;font-weight:600;color:#f0f0f0}
+.ch-count{font-size:13px;color:#444;flex-shrink:0;margin-left:10px}
+
+.type-grid{display:flex;gap:10px}
+.type-btn{
+  flex:1;padding:18px 10px;
+  border-radius:16px;border:1px solid #2a2a2a;
+  background:#141414;cursor:pointer;
+  text-align:center;transition:all 0.15s;
+}
+.type-btn:active{transform:scale(0.97)}
+.type-btn.t-all{border-color:#555}
+.type-btn.t-concept{border-color:#1e4060;background:#0d1a2b}
+.type-btn.t-calc{border-color:#3a1a55;background:#1a0d2b}
+.type-icon{font-size:26px;margin-bottom:6px}
+.type-label{font-size:16px;font-weight:600}
+.t-all .type-label{color:#f0f0f0}
+.t-concept .type-label{color:#60a5fa}
+.t-calc .type-label{color:#c084fc}
+.type-sub{font-size:13px;color:#555;margin-top:3px}
+
+/* ── 카드 목록 화면 ── */
+.list-header{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:20px;
+}
+.back-btn{
+  width:40px;height:40px;border-radius:50%;
+  background:#1a1a1a;border:1px solid #333;
+  color:#888;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.list-title{font-size:18px;font-weight:700;color:#f0f0f0}
+.list-sub-label{font-size:14px;color:#555}
+
+.card-list{display:flex;flex-direction:column;gap:12px}
+.card{
+  background:#141414;border:1px solid #2a2a2a;
+  border-radius:18px;overflow:hidden;cursor:pointer;
+}
+.card:active{border-color:#555}
+.q-block{padding:16px 16px 14px}
+.q-label{font-size:12px;color:#444;letter-spacing:0.07em;margin-bottom:6px}
+.q-text{font-size:18px;font-weight:500;color:#ccc;line-height:1.5}
+.a-block{
+  background:#0f1f0f;border-top:2px solid #22c55e;
+  padding:14px 16px;
+}
+.a-label{font-size:12px;color:#22c55e;font-weight:700;letter-spacing:0.07em;margin-bottom:7px}
+.a-text{font-size:18px;color:#e2e8f0;line-height:1.65}
+.a-text .key{color:#4ade80;font-weight:700}
+.a-text .num{color:#fbbf24;font-weight:700}
+.a-text .formula{color:#c084fc;font-weight:700}
+.a-text .entry{display:block;font-family:monospace;font-size:15px;line-height:1.9}
+.a-text .debit{color:#67e8f9}
+.a-text .credit{color:#f9a8d4;padding-left:16px}
+
+/* 접기 */
+.card.collapsed .a-block{display:none}
+.card.collapsed .show-hint{display:flex}
+.show-hint{
+  display:none;padding:12px 16px;
+  align-items:center;gap:6px;
+  font-size:15px;color:#444;
+}
+
+/* 상단 이동 버튼 */
+.fab{
+  position:fixed;bottom:20px;right:16px;
+  width:46px;height:46px;border-radius:50%;
+  background:#22c55e;color:#000;
+  font-size:20px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;
+  box-shadow:0 2px 14px rgba(34,197,94,0.35);
+}
+.empty{text-align:center;padding:40px 0;font-size:16px;color:#444}
+</style>
+</head>
+<body>
+
+<!-- 홈 화면 -->
+<div class="screen active" id="homeScreen">
+  <div class="home-title">회계학 중간고사</div>
+  <div class="home-sub">챕터와 유형을 선택하세요</div>
+
+  <div class="section-label">챕터 선택</div>
+  <div class="ch-grid" id="chGrid"></div>
+
+  <div class="section-label">유형 선택</div>
+  <div class="type-grid">
+    <div class="type-btn t-all" onclick="setType('all',this)">
+      <div class="type-icon">📋</div>
+      <div class="type-label">전체</div>
+      <div class="type-sub" id="cntAll"></div>
+    </div>
+    <div class="type-btn t-concept" onclick="setType('concept',this)">
+      <div class="type-icon">📘</div>
+      <div class="type-label">개념</div>
+      <div class="type-sub" id="cntConcept"></div>
+    </div>
+    <div class="type-btn t-calc" onclick="setType('calc',this)">
+      <div class="type-icon">🔢</div>
+      <div class="type-label">계산</div>
+      <div class="type-sub" id="cntCalc"></div>
     </div>
   </div>
-  <div id="listPanel" class="list-wrap"></div>
-  <div class="row">
-    <button class="pill" id="vw" onclick="setView('watch')">Watch 미리보기</button>
-    <button class="pill active-all" id="vl" onclick="setView('list')">전체 목록</button>
-  </div>
-  <div class="footer-info" id="fi"></div>
 </div>
+
+<!-- 카드 목록 화면 -->
+<div class="screen" id="listScreen">
+  <div class="list-header">
+    <button class="back-btn" onclick="goHome()">‹</button>
+    <div>
+      <div class="list-title" id="listTitle"></div>
+      <div class="list-sub-label" id="listSub"></div>
+    </div>
+  </div>
+  <div class="card-list" id="cardList"></div>
+  <div class="empty" id="emptyMsg" style="display:none">해당 카드 없음</div>
+</div>
+
+<button class="fab" id="fabBtn" style="display:none" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 const CARDS=[
@@ -103,8 +166,8 @@ const CARDS=[
    q:'정보 비대칭 하에서 재무제표와 감사의견의 역할은?',
    a:'<span class="key">재무제표</span> → 신호 전달 (Signaling)<br><span class="key">감사의견</span> → 선별 기능 (Screening)'},
   {ch:1,chName:'I. 레몬 시장',type:'concept',
-   q:'오렌지(우량 자산)에 공정가격으로 투자해야 하는가?',
-   a:'<span class="key">아니오.</span><br>공정가격 매입 → 이익 없음<br>이익 원리: <span class="formula">저가 매입 → 고가 매도</span><br>오렌지든 레몬이든 동일'},
+   q:'오렌지(우량자산)에 공정가격으로 투자해야 하는가?',
+   a:'<span class="key">아니오.</span> 공정가격 매입 → 이익 없음<br>이익 원리: <span class="formula">저가 매입 → 고가 매도</span>'},
   {ch:2,chName:'II. 회계학 입문',type:'concept',
    q:'회계의 분류: 외부 vs 내부 정보이용자',
    a:'외부 → <span class="key">재무회계</span> (주주, 채권자)<br>내부 → <span class="key">관리회계</span> (경영자, 종업원)'},
@@ -116,7 +179,7 @@ const CARDS=[
    a:'① <span class="key">영업활동</span><br>② <span class="key">투자활동</span><br>③ <span class="key">재무활동</span>'},
   {ch:2,chName:'II. 회계학 입문',type:'concept',
    q:'회계등식 및 자본의 구성',
-   a:'<span class="formula">자산 = 부채 + 자본</span><br>자본 = 납입자본 + 이익잉여금<br>　　　+ 기타포괄손익누계액<br>기말이익잉여금 = 기초 + <span class="key">당기순이익</span> − <span class="num">배당금</span>'},
+   a:'<span class="formula">자산 = 부채 + 자본</span><br>자본 = 납입자본 + 이익잉여금<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 기타포괄손익누계액<br>기말이익잉여금 = 기초 + <span class="key">당기순이익</span> − <span class="num">배당금</span>'},
   {ch:2,chName:'II. 회계학 입문',type:'concept',
    q:'총포괄이익과 자본의 관계',
    a:'<span class="formula">총포괄이익</span> = 당기순이익 + 기타포괄이익<br>기초자본 + 총포괄이익 = <span class="key">기말자본</span>'},
@@ -125,25 +188,25 @@ const CARDS=[
    a:'기존: <span class="num">규칙중심</span> Rule-based<br>IFRS: <span class="key">원칙중심</span> Principle-based'},
   {ch:3,chName:'III. 회계순환',type:'concept',
    q:'수익과 비용의 인식 원칙은?',
-   a:'<span class="key">발생주의</span> (현금주의 아님)<br>해당 기간의 수익과 비용을 대응<br>→ <span class="formula">수익·비용 대응의 원칙</span>'},
+   a:'<span class="key">발생주의</span> (현금주의 아님)<br>→ <span class="formula">수익·비용 대응의 원칙</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
    q:'2026.1.1 현금 5억으로 토지 구입, 분개는?',
-   a:'<span class="entry debit">(차) 토지　　　500,000,000</span><span class="entry credit">(대) 현금　　　500,000,000</span>'},
+   a:'<span class="entry debit">(차) 토지　　　 500,000,000</span><span class="entry credit">(대) 현금　　　 500,000,000</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
    q:'2025.7.1 1억 차입, 연이율 4%, 12/31 이자비용 분개는?',
-   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 이자비용　　2,000,000</span><span class="entry credit">(대) 미지급이자　2,000,000</span>'},
+   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 이자비용　　 2,000,000</span><span class="entry credit">(대) 미지급이자　 2,000,000</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
    q:'은행 입장: 동일 대출 12/31 이자수익 분개는?',
-   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 미수이자수익 2,000,000</span><span class="entry credit">(대) 이자수익　　2,000,000</span>'},
+   a:'<span class="num">1억×4%×6/12 = 200만원</span><br><span class="entry debit">(차) 미수이자수익 2,000,000</span><span class="entry credit">(대) 이자수익　　 2,000,000</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
-   q:'9.1 보험료 120만 선급, 12/31 수정분개(4개월 경과)?',
-   a:'9.1: <span class="entry debit">(차) 선급보험료 1,200,000</span><span class="entry credit">(대) 현금　　 1,200,000</span>12.31: <span class="num">120만×4/12=40만</span><br><span class="entry debit">(차) 보험료　　　400,000</span><span class="entry credit">(대) 선급보험료　400,000</span>'},
+   q:'9.1 보험료 120만 선급, 12/31 수정분개 (4개월 경과)?',
+   a:'9.1:<span class="entry debit">(차) 선급보험료 1,200,000</span><span class="entry credit">(대) 현금　　　 1,200,000</span>12.31: <span class="num">120만×4/12=40만</span><span class="entry debit">(차) 보험료　　　 400,000</span><span class="entry credit">(대) 선급보험료　 400,000</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
    q:'보험사가 보험료 120만 수령, 12/31 수정분개는?',
-   a:'9.1: <span class="entry debit">(차) 현금　　 1,200,000</span><span class="entry credit">(대) 선수보험수익 1,200,000</span>12.31: <span class="entry debit">(차) 선수보험수익 400,000</span><span class="entry credit">(대) 보험수익　　400,000</span>'},
+   a:'9.1:<span class="entry debit">(차) 현금　　　 1,200,000</span><span class="entry credit">(대) 선수보험수익 1,200,000</span>12.31:<span class="entry debit">(차) 선수보험수익 400,000</span><span class="entry credit">(대) 보험수익　　 400,000</span>'},
   {ch:3,chName:'III. 회계순환',type:'calc',
    q:'9.1 소모품 80만 구입, 12/31 잔액 30만, 분개는?',
-   a:'9.1: <span class="entry debit">(차) 소모품　　800,000</span><span class="entry credit">(대) 현금　　　800,000</span>12.31 사용액 <span class="num">50만</span>:<br><span class="entry debit">(차) 소모품비　500,000</span><span class="entry credit">(대) 소모품　　500,000</span>'},
+   a:'9.1:<span class="entry debit">(차) 소모품　　 800,000</span><span class="entry credit">(대) 현금　　　 800,000</span>12.31 사용액 <span class="num">50만</span>:<span class="entry debit">(차) 소모품비　 500,000</span><span class="entry credit">(대) 소모품　　 500,000</span>'},
   {ch:4,chName:'IV. 현금·수취채권',type:'concept',
    q:'매출채권·매입채무 구성 및 순매출액 계산',
    a:'<span class="key">매출채권</span> = 외상매출금 + 받을어음<br><span class="key">매입채무</span> = 외상매입금 + 지급어음<br>순매출액 = 총매출액 − 에누리 − 환입 − 할인'},
@@ -170,129 +233,111 @@ const CARDS=[
    a:'1,000,000 + 200,000<br>− 100,000 − 50,000 − 20,000<br>= <span class="key">630,000원</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'concept',
    q:'자본적 지출 vs 수익적 지출',
-   a:'<span class="key">자본적 지출</span>: 미래 경제적 효익 유입 가능<br>→ 자산 증가로 처리<br><span class="key">수익적 지출</span>: 일상적 수선·유지비<br>→ 당기비용으로 처리'},
+   a:'<span class="key">자본적 지출</span>: 미래 효익 유입 가능<br>→ 자산 증가로 처리<br><span class="key">수익적 지출</span>: 일상적 수선·유지비<br>→ 당기비용으로 처리'},
   {ch:6,chName:'VI. 유형·무형자산',type:'concept',
    q:'영업권(Goodwill)의 정의와 회계처리',
-   a:'초과이익 창출능력의 화폐 표시<br><span class="formula">영업권 = 매수대가 − 순자산 공정가치</span><br>영업권은 <span class="key">상각하지 않음</span><br>매년 <span class="num">손상평가</span> 수행'},
+   a:'초과이익 창출능력의 화폐 표시<br><span class="formula">영업권 = 매수대가 − 순자산 공정가치</span><br>영업권은 <span class="key">상각하지 않음</span> → 매년 <span class="num">손상평가</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'calc',
    q:'유형자산 취득원가: 기계100만, 매입관련비20만, 추정복구비10만',
    a:'100,000 + 20,000 + 10,000<br>= <span class="key">130,000원</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'calc',
    q:'정액법 감가상각: 취득원가 1천만, 내용연수 4년, 잔존가치 200만, 12/31 분개?',
-   a:'<span class="num">(1,000만−200만)÷4 = 200만/년</span><br><span class="entry debit">(차) 감가상각비　　2,000,000</span><span class="entry credit">(대) 감가상각누계액 2,000,000</span>'},
+   a:'<span class="num">(1,000만−200만)÷4 = 200만/년</span><br><span class="entry debit">(차) 감가상각비　　 2,000,000</span><span class="entry credit">(대) 감가상각누계액 2,000,000</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'calc',
    q:'재평가모형: 토지 취득원가 1억, 공정가치 1.5억, 분개는?',
-   a:'증가액 <span class="num">5,000만원</span><br><span class="entry debit">(차) 토지　　　　50,000,000</span><span class="entry credit">(대) 재평가이익　50,000,000</span>→ 자본 항목: <span class="key">기타포괄손익누계액</span>'},
+   a:'증가액 <span class="num">5,000만원</span><br><span class="entry debit">(차) 토지　　　　 50,000,000</span><span class="entry credit">(대) 재평가이익　 50,000,000</span>→ 자본: <span class="key">기타포괄손익누계액</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'calc',
    q:'자산손상: 장부가치 6백만, 순공정가치 4백만, 사용가치 5백만, 분개?',
-   a:'회수가능액 = Max(4M, 5M) = <span class="num">5M</span><br>손상차손 = 6M − 5M = <span class="key">100만원</span><br><span class="entry debit">(차) 유형자산손상차손 1,000,000</span><span class="entry credit">(대) 손상차손누계액　1,000,000</span>'},
+   a:'회수가능액 = Max(4M,5M) = <span class="num">5M</span><br>손상차손 = 6M−5M = <span class="key">100만원</span><br><span class="entry debit">(차) 유형자산손상차손 1,000,000</span><span class="entry credit">(대) 손상차손누계액　 1,000,000</span>'},
   {ch:6,chName:'VI. 유형·무형자산',type:'calc',
    q:'영업권 계산: 매수대가 3억, 피인수기업 자산6억/부채4억',
-   a:'순자산 공정가치 = 6억 − 4억 = <span class="num">2억</span><br>영업권 = 3억 − 2억 = <span class="key">100,000,000원</span>'},
+   a:'순자산 공정가치 = 6억−4억 = <span class="num">2억</span><br>영업권 = 3억−2억 = <span class="key">100,000,000원</span>'},
 ];
 
 const CHAPTERS=[...new Set(CARDS.map(c=>c.ch))];
-let selCh='all',selType='all',filtered=[...CARDS],curIdx=0,curView='list';
+let selCh=null, selType='all';
 
-function buildFilters(){
-  const cr=document.getElementById('chRow');
-  cr.innerHTML='';
-  const ab=mkPill('전체 챕터','all','ch');ab.classList.add('active-all');cr.appendChild(ab);
+function init(){
+  // 챕터 버튼
+  const grid=document.getElementById('chGrid');
   CHAPTERS.forEach(ch=>{
-    const c=CARDS.find(x=>x.ch===ch);
-    const short=c.chName.replace(/^[IVX]+\.\s*/,'').slice(0,5);
-    cr.appendChild(mkPill('Ch'+ch+' '+short,ch,'ch'));
+    const info=CARDS.find(c=>c.ch===ch);
+    const total=CARDS.filter(c=>c.ch===ch).length;
+    const btn=document.createElement('div');
+    btn.className='ch-btn';
+    btn.innerHTML=`<div class="ch-btn-left"><div class="ch-num">Ch ${ch}</div><div class="ch-name">${info.chName.replace(/^[IVX]+\.\s*/,'')}</div></div><div class="ch-count">${total}장</div>`;
+    btn.onclick=()=>openList(ch);
+    grid.appendChild(btn);
   });
-  const tr=document.getElementById('typeRow');
-  tr.innerHTML='';
-  const ab2=mkPill('전체 유형','all','type');ab2.classList.add('active-all');tr.appendChild(ab2);
-  tr.appendChild(mkPill('📘 개념','concept','type'));
-  tr.appendChild(mkPill('🔢 계산','calc','type'));
+  // 카운트
+  document.getElementById('cntAll').textContent=CARDS.length+'장';
+  document.getElementById('cntConcept').textContent=CARDS.filter(c=>c.type==='concept').length+'장';
+  document.getElementById('cntCalc').textContent=CARDS.filter(c=>c.type==='calc').length+'장';
 }
 
-function mkPill(label,val,group){
-  const b=document.createElement('button');
-  b.className='pill';b.textContent=label;
-  b.onclick=()=>setFilter(val,group,b);
-  return b;
+function setType(type,btn){
+  selType=type;
+  document.querySelectorAll('.type-btn').forEach(b=>{
+    b.style.opacity='0.45';b.style.transform='scale(0.97)';
+  });
+  btn.style.opacity='1';btn.style.transform='scale(1)';
+  if(selCh!==null) renderCards();
 }
 
-function setFilter(val,group,btn){
-  if(group==='ch'){
-    selCh=val;
-    document.querySelectorAll('#chRow .pill').forEach(b=>{b.className='pill'});
-    btn.className='pill '+(val==='all'?'active-all':'active-ch');
-  } else {
-    selType=val;
-    document.querySelectorAll('#typeRow .pill').forEach(b=>{b.className='pill'});
-    btn.className='pill '+(val==='all'?'active-all':val==='concept'?'active-concept':'active-calc');
-  }
-  applyFilter();
+function openList(ch){
+  selCh=ch;
+  const info=CARDS.find(c=>c.ch===ch);
+  const typeLabel=selType==='all'?'전체':selType==='concept'?'개념':'계산';
+  document.getElementById('listTitle').textContent=info.chName;
+  document.getElementById('listSub').textContent=typeLabel+' 카드';
+  renderCards();
+  document.getElementById('homeScreen').classList.remove('active');
+  document.getElementById('listScreen').classList.add('active');
+  document.getElementById('fabBtn').style.display='flex';
+  window.scrollTo(0,0);
 }
 
-function applyFilter(){
-  filtered=CARDS.filter(c=>(selCh==='all'||c.ch===selCh)&&(selType==='all'||c.type===selType));
-  curIdx=0;
-  if(curView==='watch')renderCard();else renderList();
-  document.getElementById('fi').textContent='총 '+filtered.length+'장';
-}
-
-function nav(d){
-  curIdx=Math.max(0,Math.min(filtered.length-1,curIdx+d));
-  renderCard();
-}
-
-function renderCard(){
-  if(!filtered.length){
-    document.getElementById('wQ').textContent='해당 조건의 카드 없음';
-    document.getElementById('wA').textContent='';
-    return;
-  }
-  const c=filtered[curIdx];
-  document.getElementById('wCh').textContent=c.chName;
-  document.getElementById('wQ').innerHTML=c.q;
-  document.getElementById('wA').innerHTML=c.a;
-  document.getElementById('typeDot').className='type-dot '+(c.type==='concept'?'dot-concept':'dot-calc');
-  document.getElementById('pb').disabled=curIdx===0;
-  document.getElementById('nb').disabled=curIdx===filtered.length-1;
-  document.getElementById('nc').textContent=(curIdx+1)+' / '+filtered.length;
-  const dots=document.getElementById('ndots');
-  dots.innerHTML='';
-  const total=Math.min(filtered.length,5);
-  const start=Math.max(0,Math.min(curIdx-2,filtered.length-5));
-  for(let i=0;i<total;i++){
-    const d=document.createElement('div');
-    d.className='ndot'+(start+i===curIdx?' on':'');
-    dots.appendChild(d);
-  }
-  const now=new Date();
-  document.getElementById('wt').textContent=now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-}
-
-function renderList(){
-  const lp=document.getElementById('listPanel');
-  lp.innerHTML='';
-  if(!filtered.length){lp.innerHTML='<div style="color:var(--color-text-tertiary);font-size:13px;text-align:center;padding:1rem">해당 조건의 카드 없음</div>';return;}
-  filtered.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='lc';
-    const short=c.q.length>38?c.q.slice(0,38)+'…':c.q;
-    d.innerHTML=`<div class="lc-top"><span class="lc-title">${short}</span><span class="lc-badge ${c.type==='concept'?'bc':'bq'}">${c.type==='concept'?'개념':'계산'}</span></div><div class="lc-ch">${c.chName}</div>`;
-    d.onclick=()=>{curIdx=i;setView('watch');};
-    lp.appendChild(d);
+function renderCards(){
+  const filtered=CARDS.filter(c=>c.ch===selCh&&(selType==='all'||c.type===selType));
+  const list=document.getElementById('cardList');
+  const empty=document.getElementById('emptyMsg');
+  list.innerHTML='';
+  if(!filtered.length){empty.style.display='block';return;}
+  empty.style.display='none';
+  filtered.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='card collapsed';
+    card.innerHTML=`
+      <div class="q-block">
+        <div class="q-label">${c.type==='concept'?'📘 개념':'🔢 계산'} &nbsp; Q 문제</div>
+        <div class="q-text">${c.q}</div>
+      </div>
+      <div class="show-hint">👆 탭하면 정답 보기</div>
+      <div class="a-block">
+        <div class="a-label">✅ A 정답</div>
+        <div class="a-text">${c.a}</div>
+      </div>`;
+    card.onclick=()=>card.classList.toggle('collapsed');
+    list.appendChild(card);
   });
 }
 
-function setView(v){
-  curView=v;
-  document.getElementById('watchPanel').style.display=v==='watch'?'inline-block':'none';
-  document.getElementById('listPanel').style.display=v==='list'?'flex':'none';
-  document.getElementById('vw').className='pill '+(v==='watch'?'active-all':'');
-  document.getElementById('vl').className='pill '+(v==='list'?'active-all':'');
-  if(v==='watch')renderCard();else renderList();
+function goHome(){
+  document.getElementById('listScreen').classList.remove('active');
+  document.getElementById('homeScreen').classList.add('active');
+  document.getElementById('fabBtn').style.display='none';
+  window.scrollTo(0,0);
 }
 
-buildFilters();
-setView('list');
-applyFilter();
+// 스크롤 시 FAB 표시
+window.addEventListener('scroll',()=>{
+  const fab=document.getElementById('fabBtn');
+  if(fab.style.display==='flex'){
+    fab.style.opacity=window.scrollY>100?'1':'0';
+  }
+});
+
+init();
 </script>
+</body>
+</html>
