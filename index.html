@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>회계학 카드</title>
+<title>경제학원론 시험 대비</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{
@@ -14,7 +14,7 @@ html,body{
 .screen{display:none;min-height:100vh;padding:20px 16px 40px}
 .screen.active{display:block}
 
-/* 홈 */
+/* ── 홈 화면 ── */
 .home-title{font-size:22px;font-weight:700;color:#4ade80;text-align:center;margin-bottom:4px;margin-top:8px}
 .home-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px}
 .section-label{font-size:12px;color:#555;letter-spacing:0.06em;margin-bottom:10px;margin-top:4px}
@@ -29,6 +29,8 @@ html,body{
 .ch-num{font-size:12px;color:#555;margin-bottom:3px}
 .ch-name{font-size:17px;font-weight:600;color:#f0f0f0}
 .ch-count{font-size:13px;color:#444;flex-shrink:0;margin-left:10px}
+
+/* ── 유형 선택 ── */
 .type-grid{display:flex;gap:10px}
 .type-btn{
   flex:1;padding:16px 8px;border-radius:16px;border:1px solid #2a2a2a;
@@ -45,7 +47,7 @@ html,body{
 .t-calc .type-label{color:#c084fc}
 .type-sub{font-size:12px;color:#555;margin-top:2px}
 
-/* 목록 화면 */
+/* ── 카드 목록 화면 ── */
 .list-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
 .back-btn{
   width:40px;height:40px;border-radius:50%;
@@ -56,24 +58,37 @@ html,body{
 .list-title{font-size:17px;font-weight:700;color:#f0f0f0;line-height:1.3}
 .list-sub-label{font-size:13px;color:#555;margin-top:2px}
 .card-list{display:flex;flex-direction:column;gap:12px}
+
+/* ── 카드 ── */
 .card{background:#141414;border:1px solid #2a2a2a;border-radius:18px;overflow:hidden;cursor:pointer}
 .card:active{border-color:#555}
+
+/* 문제 블록 */
 .q-block{padding:14px 16px 12px}
 .q-label{font-size:11px;color:#444;letter-spacing:0.07em;margin-bottom:5px}
 .q-text{font-size:17px;font-weight:500;color:#ccc;line-height:1.5}
+
+/* 정답 블록 — 시각적으로 명확히 구분 */
 .a-block{background:#0f1f0f;border-top:2px solid #22c55e;padding:13px 16px}
 .a-label{font-size:11px;color:#22c55e;font-weight:700;letter-spacing:0.07em;margin-bottom:6px}
 .a-text{font-size:17px;color:#e2e8f0;line-height:1.65}
-.a-text .key{color:#4ade80;font-weight:700}
-.a-text .num{color:#fbbf24;font-weight:700}
-.a-text .formula{color:#c084fc;font-weight:700}
+
+/* 정답 하이라이트 클래스 */
+.a-text .key{color:#4ade80;font-weight:700}        /* 핵심어 */
+.a-text .num{color:#fbbf24;font-weight:700}        /* 숫자/금액 */
+.a-text .formula{color:#c084fc;font-weight:700}   /* 공식/원칙 */
 .a-text .entry{display:block;font-family:monospace;font-size:14px;line-height:1.9}
-.a-text .debit{color:#67e8f9}
-.a-text .credit{color:#f9a8d4;padding-left:16px}
+.a-text .debit{color:#67e8f9}                     /* 차변 */
+.a-text .credit{color:#f9a8d4;padding-left:16px}  /* 대변 */
+
+/* 접기/펼치기 */
 .card.collapsed .a-block{display:none}
 .card.collapsed .show-hint{display:flex}
 .show-hint{display:none;padding:10px 16px;align-items:center;gap:6px;font-size:14px;color:#444}
+
 .empty{text-align:center;padding:40px 0;font-size:16px;color:#444}
+
+/* FAB 스크롤 버튼 */
 .fab{
   position:fixed;bottom:20px;right:16px;
   width:46px;height:46px;border-radius:50%;
@@ -85,8 +100,9 @@ html,body{
 </head>
 <body>
 
+<!-- 홈 화면 -->
 <div class="screen active" id="homeScreen">
-  <div class="home-title">회계학 중간고사</div>
+  <div class="home-title">경제학원론 시험 대비</div>
   <div class="home-sub">챕터와 유형을 선택하세요</div>
   <div class="section-label">📂 챕터 선택</div>
   <div class="ch-grid" id="chGrid"></div>
@@ -110,6 +126,7 @@ html,body{
   </div>
 </div>
 
+<!-- 카드 목록 화면 -->
 <div class="screen" id="listScreen">
   <div class="list-header">
     <button class="back-btn" onclick="goHome()">‹</button>
@@ -125,261 +142,63 @@ html,body{
 <button class="fab" id="fabBtn" style="display:none" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
+// ── CARD DATA ──
 const CARDS = [
+  // 1강 - 경제학 기초 개념
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'합리적 선택(合理選擇)이란?', a:'<span class="key">한계편익</span>(얻는 이익)이 <span class="key">한계비용</span>(포기하는 비용)보다 <span class="key">크거나 같을 때</span> 이루어지는 의사결정.<br><br>當<span class="key">邊際利益</span>大於或等於<span class="key">邊際成本</span>時所做出的決策。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'기회비용(機會成本)이란?', a:'어떤 선택을 함으로써 <span class="key">포기해야 하는 대안들 중에서 가장 가치가 큰 것</span>.<br><br>因為某個選擇而<span class="key">放棄的替代方案中,價值最高的那一個</span>。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'매몰비용(沉沒成本)이란?', a:'<span class="key">이미 지출되어 다시 회수할 수 없는 비용</span>으로, 합리적 의사결정 시 <span class="key">고려해서는 안 되는 비용</span>.<br><br>已經支出且<span class="key">無法回收</span>,在理性決策時<span class="key">不應考慮</span>的成本。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'미시경제이론(個體/微觀經濟理論)이란?', a:'<span class="key">가계, 기업 등 개별 경제주체</span>의 의사결정과 <span class="key">시장에서의 상호작용</span>을 연구하는 분야.<br><br>研究<span class="key">家戶、企業等個別經濟主體</span>的決策與<span class="key">市場互動</span>的領域。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'거시경제이론(總體/宏觀經濟理論)이란?', a:'<span class="key">물가, 실업, 경제성장</span> 등 <span class="key">국가 경제 전체의 움직임</span>을 연구하는 분야.<br><br>研究<span class="key">物價、失業、經濟成長</span>等<span class="key">國家整體經濟運作</span>的領域。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'국민경제내 경제주체들이란?', a:'경제활동을 수행하는 주체로 <span class="key">가계, 기업, 정부</span> 등을 일컫는 말.<br><br>執行經濟活動的主體,如<span class="key">家戶、企業、政府</span>等。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'생산가능곡선(生產可能曲線, PPF)이란?', a:'한 사회가 가진 <span class="key">모든 생산요소와 기술을 효율적으로 사용</span>하여 <span class="key">최대로 생산할 수 있는 두 재화의 조합</span>을 나타낸 곡선.<br><br>一個社會<span class="key">有效率地使用所有生產要素與技術</span>,所能生產的<span class="key">兩種財貨最大組合</span>曲線。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'시장경제(市場經濟)란?', a:'개별 경제주체들의 <span class="key">자유로운 의사결정</span>과 <span class="key">시장의 가격기구</span>에 의해 경제문제가 해결되는 체제.<br><br>由個別經濟主體<span class="key">自由決策</span>及<span class="key">市場價格機制</span>解決經濟問題的體制。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'통제경제(統制經濟/計畫經濟)란?', a:'<span class="key">국가(정부)의 중앙계획</span>에 의해 자원배분 등 주요 경제문제가 결정되는 체제.<br><br>由<span class="key">國家中央計畫</span>決定資源分配等經濟問題的體制。'},
+  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'혼합경제(混合經濟)란?', a:'<span class="key">시장경제를 기본</span>으로 하면서 <span class="key">정부의 개입을 일부 허용</span>하는 경제체제.<br><br>以<span class="key">市場經濟為基礎</span>,<span class="key">部分允許政府介入</span>的經濟體制。'},
 
-  /* ── I. 레몬 시장 ── */
-  {ch:1, chName:'I. 레몬 시장', type:'concept',
-   q:'자본 시장의 정보 비대칭 하에서 레몬(불량)과 오렌지(우량)를 구별하기 어려운 문제의 해결책은?',
-   a:'<span class="key">재무제표</span> → 자본 시장에서 신호 전달 역할 (Signaling)<br><span class="key">감사의견</span> → 자본 시장에서 선별 역할 (Screening)'},
-  {ch:1, chName:'I. 레몬 시장', type:'concept',
-   q:'오렌지(우량 자산)에 투자해야 하는가?',
-   a:'<span class="key">아니오</span><br>공정가격으로 오렌지를 매입하면 이익이 없다.<br>이익을 내려면 <span class="formula">저가 매입 → 고가 매도</span> (오렌지든 레몬이든)'},
+  // 2강 - 수요와 공급
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'보이지 않는 손(看不見的手)이란?', a:'시장에서 <span class="key">가격기구</span>를 통해 <span class="key">개인의 이기적 행동이 사회 전체의 이익을 가져오는 원리</span> (애덤 스미스).<br><br>透過<span class="key">價格機制</span>,<span class="key">個人的自私行為帶來社會整體利益</span>的原理。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'시장과 교환(市場與交換)이란?', a:'<span class="key">재화와 서비스의 수요자와 공급자가 만나 거래가 이루어지는 곳</span>과 그 행위.<br><br><span class="key">供需雙方相遇進行交易的場所與行為</span>。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'가격/가격기구(價格/價格機制)란?', a:'시장에서 <span class="key">수요와 공급을 조절</span>하고 <span class="key">자원을 효율적으로 배분하는 신호</span> 역할을 하는 것.<br><br>在市場中<span class="key">調節供需</span>並作為<span class="key">有效分配資源訊號</span>的機制。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'수요의 법칙(需求法則)이란?', a:'가격이 상승하면 수요량이 감소하고, 가격이 하락하면 수요량이 증가하는 <span class="key">역(-)의 관계</span>.<br><br><span class="key">價格升需求降,價格降需求升</span>的反向關係。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'공급의 법칙(供給法則)이란?', a:'가격이 상승하면 공급량이 증가하고, 가격이 하락하면 공급량이 감소하는 <span class="key">정(+)의 관계</span>.<br><br><span class="key">價格升供給升,價格降供給降</span>的正向關係。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'수요의 가격탄력성(需求的價格彈性)이란?', a:'재화의 가격이 변동할 때, 그 재화의 <span class="key">수요량이 얼마나 민감하게 변하는지를 측정하는 척도</span>.<br><br>衡量價格變動時,<span class="key">需求量變動敏感度</span>的指標。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'소비자잉여(消費者剩餘)란?', a:'소비자가 <span class="key">지불할 용의가 있는 최대 금액</span>에서 <span class="key">실제로 지불한 금액을 뺀 차액</span>.<br><br>消費者<span class="key">願意支付的最高價格</span>減去<span class="key">實際支付的價格</span>。'},
+  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'생산자잉여(生產者剩餘)란?', a:'생산자가 <span class="key">실제로 받은 금액</span>에서 <span class="key">최소한 받아야 하겠다고 생각한 금액을 뺀 차액</span>.<br><br>生產者<span class="key">實際收到的金額</span>減去其<span class="key">願意接受的最低金額</span>。'},
 
-  /* ── II. 회계학 입문 (1장) ── */
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'1. 회계의 기능',
-   a:'회계는 정보이용자들이 <span class="key">경제적 의사결정</span>을 하는 데 도움이 되는 유용한 정보를 제공한다.'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-1) 회계정보를 외부정보이용자에게 제공하는 회계의 분야는?',
-   a:'<span class="key">재무회계</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-2) 내부 정보이용자가 의사결정을 하는 데 필요한 정보를 제공하는 회계의 분야는?',
-   a:'<span class="key">관리회계</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-3) 가장 중요한 두 종류의 외부정보이용자는 누구인가?',
-   a:'<span class="key">주주, 채권자</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-4) 내부정보이용자는 누구인가?',
-   a:'<span class="key">경영자, 종업원</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-5) 세법이 허용하는 범위 안에서 세금을 최소화하는 방안은?',
-   a:'<span class="key">세무계획 (Tax Planning)</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'2-6) 4개의 감사의견은 무엇인가?',
-   a:'<span class="key">적정의견, 한정의견, 부적정의견, 의견거절</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'3-1) 기업의 경영활동 3가지는 무엇인가?',
-   a:'<span class="key">영업활동, 투자활동, 재무활동</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'4-1) 기업의 재무상태에 관한 정보를 전달하는 재무제표는?',
-   a:'<span class="key">재무상태표</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'4-2) 기업의 경영성과에 관한 정보를 전달하는 재무제표는?',
-   a:'<span class="key">포괄손익계산서</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'5-1) 회계등식은?',
-   a:'<span class="formula">자산 = 부채 + 자본</span><br>자본 = 자산 − 부채 = <span class="key">순자산</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'5-2) 자산의 구성은?',
-   a:'자산 = <span class="key">유동자산 + 비유동자산</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'5-3) 부채란?',
-   a:'기업이 <span class="key">경제적 자원을 이전해야 하는 현재의 의무</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'5-4) 자본의 구성은?',
-   a:'자본 = <span class="key">납입자본 + 이익잉여금 + 기타포괄손익누계액</span><br>납입자본 = 자본금 + 자본잉여금'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'5-6) 기말이익잉여금 공식은?',
-   a:'기말이익잉여금 = 기초이익잉여금 + <span class="key">당기순이익</span> − <span class="num">배당금</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'6-1) 당기순이익 공식은?',
-   a:'<span class="formula">당기순이익 = 수익 − 비용</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'6-2) 총포괄이익 공식은?',
-   a:'<span class="formula">총포괄이익 = 당기순이익 + 기타포괄이익</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'6-3) 기초자본과 기말자본의 관계는?',
-   a:'<span class="formula">기초자본 + 총포괄이익 = 기말자본</span>'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'7-1) 재무제표의 상호연관성: 당기순이익은 재무상태표에 어떤 영향을 주는가?',
-   a:'당기순이익은 재무상태표의 자본항목 중 <span class="key">이익잉여금을 증가</span>시킴'},
-  {ch:2, chName:'II. 회계학 입문 (1장)', type:'concept',
-   q:'8-1) 국제회계기준(IFRS)은 어떤 방식의 기준인가?',
-   a:'국제회계기준은 기존에 국내에서 사용하던 <span class="num">규칙중심 (Rule-based)</span> 회계기준이 아니라<br><span class="key">원칙중심 (Principle-based)</span> 회계기준이다.'},
+  // 4장 - 소비자의 선택
+  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'한계효용(邊際效用)이란?', a:'재화 <span class="key">1단위를 추가로 소비</span>할 때 얻게 되는 <span class="key">총효용의 증가분</span>.<br><br>增加消費<span class="key">一單位財貨</span>所帶來的<span class="key">總效用增加量</span>。'},
+  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'한계효용체감의 법칙(邊際效用遞減法則)이란?', a:'재화의 소비량이 증가함에 따라 추가적으로 얻는 <span class="key">한계효용이 점차 감소</span>하는 현상.<br><br>隨消費量增加,<span class="key">邊際效用逐漸遞減</span>的現象。'},
+  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'대체효과(替代效應)란?', a:'상대가격의 변화로 인해 <span class="key">상대적으로 비싸진 재화의 소비를 줄이고 저렴해진 재화의 소비를 늘리는 효과</span>.<br><br>因相對價格改變,<span class="key">少買變貴的、多買變便宜</span>的效應。'},
+  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'소득효과(所得效應)란?', a:'가격 하락으로 소비자의 <span class="key">실질소득이 증가한 것과 같은 효과</span>가 발생하여 수요량이 변하는 현상.<br><br>價格下降導致<span class="key">實質所得增加</span>,進而改變需求量的效應。'},
 
-  /* ── III. 회계의 순환 (2장 및 3장) ── */
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'concept',
-   q:'1. 수익과 비용의 인식 원칙은?',
-   a:'현금주의 원칙이 아니라 <span class="key">발생주의 원칙</span>에 따른다.'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'concept',
-   q:'2. 비용이란 무엇인가?',
-   a:'기업이 <span class="key">수익을 창출하는 과정</span>에서 희생된 자원의 경제적 가치'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'concept',
-   q:'3. 수익·비용 대응의 원칙(Revenue-Expense Matching Principle)이란?',
-   a:'일정 기간에 실현된 수익과 이 수익을 획득하기 위해 발생한 비용을 서로 대응시켜 <span class="key">해당 기간의 이익을 계산</span>하는 원칙'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-1) ㈜우송이 2026년 1월 1일에 현금 500,000,000원을 지급하고 토지를 구입했다. 분개하라.',
-   a:'<span class="entry debit">(차) 토지　　　 500,000,000</span><span class="entry credit">(대) 현금　　　 500,000,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-2) 2025년 7/1 ㈜우송이 4%, 1억 차입. 이자지급일 매년 6/1. 2025년 12/31 이자비용 분개는?',
-   a:'<span class="num">100,000,000 × 4% × 6/12 = 2,000,000원</span><br><span class="entry debit">(차) 이자비용　　 2,000,000</span><span class="entry credit">(대) 미지급이자　 2,000,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-3) 하나은행이 2025년 7/1 ㈜우송에 4%, 1억 대출. 이자수취일 매년 6/1. 2025년 12/31 이자수익 분개는?',
-   a:'<span class="num">100,000,000 × 4% × 6/12 = 2,000,000원</span><br><span class="entry debit">(차) 미수이자수익 2,000,000</span><span class="entry credit">(대) 이자수익　　 2,000,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-4) ㈜우송이 2025년 9/1 1년 보험료 1,200,000원을 선급했다. 분개하라.',
-   a:'<span class="entry debit">(차) 선급보험료 1,200,000</span><span class="entry credit">(대) 현금　　　 1,200,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-5) 2025년 12/31 위 보험료에 대한 수정분개를 하라.',
-   a:'<span class="num">1,200,000 × 4/12 = 400,000원</span><br><span class="entry debit">(차) 보험료　　　 400,000</span><span class="entry credit">(대) 선급보험료　 400,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-6) 하나손해보험이 2025년 9/1 ㈜우송으로부터 보험료 1,200,000원을 수령했다. 분개하라.',
-   a:'<span class="entry debit">(차) 현금　　　 1,200,000</span><span class="entry credit">(대) 선수보험수익 1,200,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-7) 2025년 12/31 하나손해보험의 수정분개를 하라.',
-   a:'<span class="entry debit">(차) 선수보험수익 400,000</span><span class="entry credit">(대) 보험수익　　 400,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-8) ㈜우송이 2025년 9/1 소모품을 입하하고 800,000원을 지급했다. 분개하라.',
-   a:'<span class="entry debit">(차) 소모품　　 800,000</span><span class="entry credit">(대) 현금　　　 800,000</span>'},
-  {ch:3, chName:'III. 회계의 순환 (2·3장)', type:'calc',
-   q:'4-9) 2025년 12/31 남아 있는 소모품은 300,000원이었다. 수정분개를 하라.',
-   a:'<span class="num">소모품비 = 800,000 − 300,000 = 500,000원</span><br><span class="entry debit">(차) 소모품비　 500,000</span><span class="entry credit">(대) 소모품　　 500,000</span>'},
+  // 5장 - 기업의 생산활동
+  {ch:5, chName:'5장. 기업의 생산활동', type:'concept', q:'한계생산체감의 법칙(邊際產量遞減法則)이란?', a:'다른 생산요소는 고정시키고 <span class="key">한 요소를 계속 추가 투입</span>할 때, 어느 시점부터는 <span class="key">한계생산량이 감소</span>하는 현상.<br><br>固定其他要素,不斷增加單一要素投入,<span class="key">邊際產量終將減少</span>的現象。'},
 
-  /* ── IV. 현금, 수취채권, 지급의무 (5장) ── */
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'1. 내부통제제도란?',
-   a:'기업의 <span class="key">자산을 보호</span>하고 회계기록의 <span class="key">신뢰성을 높이기</span> 위한 정책 및 절차'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'2. 매출채권의 구성은?',
-   a:'매출채권 = <span class="key">외상매출금 + 받을어음</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'3. 순매출액 공식은?',
-   a:'순매출액 = 총매출액 − <span class="key">매출에누리</span> − <span class="key">매출환입</span> − <span class="key">매출할인</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'4. 대손충당금이란?',
-   a:'고객의 경영상태가 악화되어 매출채권 회수가능성이 낮아질 경우,<br>손상 예상금액을 추정하여 <span class="key">대손충당금</span>을 설정하고<br>관련 비용을 <span class="key">대손상각비</span>로 인식'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'5. 매입채무의 구성은?',
-   a:'매입채무 = <span class="key">외상매입금 + 지급어음</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'6. 재고자산이 아닌 자산을 외상으로 매각하여 발생한 채권은?',
-   a:'<span class="key">미수금</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'7. 재고자산 이외의 자산을 구입해서 발생하는 채무는?',
-   a:'<span class="key">미지급금</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'8. 발생주의에 의해 당기에 수익으로 인식하였으나 현금을 수취하지 않은 부분은?',
-   a:'<span class="key">미수수익</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'9. 발생주의에 의해 당기의 비용으로 인식하였으나 지급이 이루어지지 않은 부분은?',
-   a:'<span class="key">미지급비용</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'10. 재화와 용역을 구입할 목적으로 구입대금의 일부를 공급자에게 지급한 부분은?',
-   a:'<span class="key">선급금</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'11. 재화와 용역을 판매하기 전에 현금을 미리 수취한 부분은?',
-   a:'<span class="key">선수금</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'12. 미래에 발생할 비용을 미리 지급한 부분은?',
-   a:'<span class="key">선급비용</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'13. 미래에 발생할 수익을 미리 수취한 부분은?',
-   a:'<span class="key">선수수익</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'14. 부가가치세 및 종업원의 근로소득세와 같이 기업이 미리 받아 일시적으로 보관하는 유동부채는?',
-   a:'<span class="key">예수금</span>'},
-  {ch:4, chName:'IV. 현금·수취채권·지급의무 (5장)', type:'concept',
-   q:'15. 기업 장부상 예금 내역과 은행 거래기록을 대조할 때 작성하는 표는?',
-   a:'<span class="key">은행계정조정표</span>'},
+  // 6-7장 - 시장구조
+  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'완전경쟁시장(完全競爭市場)이란?', a:'<span class="key">수많은 수요자와 공급자</span>, <span class="key">동질적 상품</span>, <span class="key">진입과 탈퇴의 자유</span>, <span class="key">완전한 정보</span>를 특징으로 하는 시장.<br><br><span class="key">買賣方眾多、產品同質、進出自由、資訊完全</span>。'},
+  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'독점시장(獨占市場)이란?', a:'<span class="key">단 하나의 공급자만 존재</span>하며 대체재가 없어 기업이 <span class="key">가격설정자</span>가 되는 시장.<br><br><span class="key">單一供給者、無替代品、為價格決定者</span>。'},
+  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'독점경쟁시장(獨占性競爭市場)이란?', a:'다수의 공급자가 존재하지만, <span class="key">\'제품 차별화\'</span>를 통해 각 기업이 어느 정도 독점력을 가지는 시장.<br><br>供給者多,但透過<span class="key">「產品差異化」</span>擁有部分獨占力。'},
+  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'과점시장(寡占市場)이란?', a:'<span class="key">소수의 기업</span>이 시장을 장악하며, 기업 간의 <span class="key">\'상호의존성\'이 매우 높은 시장</span>.<br><br><span class="key">少數企業</span>掌控,企業間<span class="key">「相互依存度」極高</span>。'},
 
-  /* ── V. 재고자산 (6장) ── */
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'1. 재고자산이란?',
-   a:'기업이 <span class="key">영업활동의 일환으로 판매를 목적</span>으로 보유하는 자산'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'2. 유통기업이 완성된 상품을 외부에서 구입하여 판매하는 재고자산은?',
-   a:'<span class="key">상품</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'3. 제조기업이 보유하고 있는 재고자산 3가지는?',
-   a:'<span class="key">원재료, 재공품, 제품</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'4. 재고자산은 언제 매출원가로 전환되는가?',
-   a:'<span class="key">매출 시점</span>에 매출원가로 전환된다.'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'5. 매출총이익 공식은?',
-   a:'<span class="formula">매출 − 매출원가 = 매출총이익</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'6. 판매가능재고자산 공식은?',
-   a:'<span class="formula">기초재고 + 당기매입 = 판매가능재고자산</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'7. 매출원가 공식은?',
-   a:'<span class="formula">판매가능재고자산 − 기말재고 = 매출원가</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'calc',
-   q:'8. 재고자산의 취득원가를 구하라.\n매입가격 1,000,000 / 직접부대비용 200,000 / 매입에누리 100,000 / 매입환출 50,000 / 매입할인 20,000',
-   a:'1,000,000 + 200,000 − 100,000 − 50,000 − 20,000<br>= <span class="key">630,000원</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'9-1) 판매된 재고자산의 취득단가를 추적하여 매출원가와 기말재고를 결정하는 방법은?',
-   a:'<span class="key">개별법</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'9-2) 먼저 매입한 재고자산이 먼저 판매되고, 기말재고는 가장 최근 매입 항목이라고 가정하는 방법은?',
-   a:'<span class="key">선입선출법 (FIFO)</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'9-3) 가장 최근에 매입한 재고자산이 먼저 판매되고, 기말재고는 가장 오래전 매입 항목이라고 가정하는 방법은?',
-   a:'<span class="key">후입선출법 (LIFO)</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'9-4) 기초재고와 당기매입의 원가를 평균하여 단위원가를 결정하는 방법은?',
-   a:'<span class="key">가중평균법</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'concept',
-   q:'10. 물가 상승 시 당기순이익이 가장 높게 측정되는 방법은?',
-   a:'<span class="key">선입선출법</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'calc',
-   q:'11-1) 재고자산 취득원가 100,000원, 순실현가치 80,000원. 재고자산 금액은?',
-   a:'취득원가 vs 순실현가치 중 낮은 금액<br>= <span class="key">80,000원</span>'},
-  {ch:5, chName:'V. 재고자산 (6장)', type:'calc',
-   q:'11-2) 재고자산 취득원가 200,000원, 순실현가치 240,000원. 재고자산 금액은?',
-   a:'취득원가 vs 순실현가치 중 낮은 금액<br>= <span class="key">200,000원</span>'},
+  // 8장 - 게임과 전략
+  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'게임이론(賽局理論)이란?', a:'<span class="key">상호 의존적인 상황</span>에서 각 주체가 자신의 이익을 극대화하기 위해 어떤 <span class="key">전략적 의사결정</span>을 내리는지 분석하는 이론.<br><br>分析在<span class="key">相互依存情況</span>下,主體如何做出<span class="key">戰略決策</span>的理論。'},
+  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'용의자의 딜레마(囚徒困境)란?', a:'상호 협력하면 더 좋은 결과를 얻을 수 있음에도, <span class="key">개인의 합리적 선택이 결국 모두에게 나쁜 결과를 초래</span>하는 상황.<br><br>合作能更好,但<span class="key">個人理性選擇導致雙贏破局</span>的情況。'},
+  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'승자의 불행(贏家的詛咒)이란?', a:'경매 등에서 경쟁자를 이기고 대상을 차지했지만, <span class="key">실제 가치보다 너무 높은 가격을 지불하여 손해</span>를 보는 현상.<br><br>在拍賣中贏了,卻因<span class="key">出價過高而虧損</span>。'},
 
-  /* ── VI. 유형자산과 무형자산 (7장) ── */
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'1. 유형자산이란?',
-   a:'영업활동을 위해 <span class="key">장기간 사용</span>하는 <span class="key">물리적 실체가 있는</span> 자산'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'2. 유형자산 취득원가를 구하라.\n기계 구입가격 100,000 / 매입관련원가 20,000 / 추정복구원가 10,000',
-   a:'100,000 + 20,000 + 10,000<br>= <span class="key">130,000원</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'3. 자본적 지출이란?',
-   a:'유형자산 취득 후 지출로 미래 경제적 효익이 기업에 유입될 가능성이 높으면<br><span class="key">자산의 증가</span>로 처리하는 지출'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'4. 수익적 지출이란?',
-   a:'유형자산 취득 후 지출로 일상적인 수선비, 유지비와 같이<br><span class="key">당기비용</span>으로 처리하는 지출'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'5. ㈜우송이 2025년 3/1 기계장치를 신품으로 교체, 현금 1,000,000,000원 지출. 분개하라.',
-   a:'<span class="entry debit">(차) 기계장치　 1,000,000,000</span><span class="entry credit">(대) 현금　　　 1,000,000,000</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'6. ㈜우송이 2025년 10/1 기계 수선을 위해 현금 100,000원을 지출. 분개하라.',
-   a:'<span class="entry debit">(차) 수선비　　 100,000</span><span class="entry credit">(대) 현금　　　 100,000</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'7. ㈜우송 기계장치 취득원가 10,000,000원, 내용연수 4년, 잔존가치 2,000,000원, 정액법. 2025년 12/31 감가상각 분개는?',
-   a:'<span class="num">(10,000,000 − 2,000,000) ÷ 4 = 2,000,000원</span><br><span class="entry debit">(차) 감가상각비　　 2,000,000</span><span class="entry credit">(대) 감가상각누계액 2,000,000</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'8. ㈜우송 토지 취득원가 100,000,000원, 2025년 12/31 공정가치 150,000,000원. 재평가모형 분개는?',
-   a:'<span class="entry debit">(차) 토지　　　 50,000,000</span><span class="entry credit">(대) 재평가이익 50,000,000</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'9. 재평가모형 적용 후 2025년 말 재무상태표에서 토지의 금액은?',
-   a:'<span class="key">150,000,000원</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'10. 재평가모형 적용 후 2025년 말 재무상태표에서 재평가이익은 어디에 표시되는가?',
-   a:'자본 항목<br>→ <span class="key">기타포괄이익누계액 — 재평가잉여금 50,000,000원</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'11-1) ㈜우송 기계장치 취득원가 10,000,000원, 내용연수 10년, 잔존가치 없음. 2024년도 감가상각 후 장부가치는?',
-   a:'감가상각누계 = 10,000,000 ÷ 10 × 4 = <span class="num">4,000,000원</span><br>장부가치 = 10,000,000 − 4,000,000 = <span class="key">6,000,000원</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'11-2) 위 기계의 순공정가치 4,000,000원, 사용가치 5,000,000원. 손상 분개는?',
-   a:'회수가능액 = Max(4,000,000, 5,000,000) = <span class="num">5,000,000원</span><br>손상차손 = 6,000,000 − 5,000,000 = <span class="num">1,000,000원</span><br><span class="entry debit">(차) 유형자산손상차손 1,000,000</span><span class="entry credit">(대) 손상차손누계　　 1,000,000</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'12. 영업권이란?',
-   a:'정상적 수익률 이상의 이익을 획득할 수 있는 <span class="key">초과이익 창출능력</span>을 화폐로 표시한 것'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'13. 영업권의 회계처리는?',
-   a:'영업권은 <span class="key">상각하지 않고</span> 매년 <span class="key">손상평가</span>를 수행'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'concept',
-   q:'14. 영업권 인식액 공식은?',
-   a:'<span class="formula">영업권 인식액 = 매수대가 − 피매수기업의 순자산 공정가치</span>'},
-  {ch:6, chName:'VI. 유형자산·무형자산 (7장)', type:'calc',
-   q:'15. ㈜우송이 ㈜대전 주식 100%를 300,000,000원에 인수. ㈜대전 자산 공정가치 600,000,000원, 부채 400,000,000원. 영업권은?',
-   a:'순자산 공정가치 = 600,000,000 − 400,000,000 = <span class="num">200,000,000원</span><br>영업권 = 300,000,000 − 200,000,000 = <span class="key">100,000,000원</span>'},
+  // 11장 - 정보경제이론
+  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'비대칭 정보(資訊不對稱)란?', a:'거래 당사자 중 <span class="key">한쪽이 다른 쪽보다 대상에 대해 더 많은 정보를 가지고 있는 상황</span>.<br><br>交易<span class="key">一方掌握的資訊多於另一方</span>。'},
+  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'역선택(逆向選擇)이란?', a:'정보 비대칭으로 인해 <span class="key">정보가 부족한 쪽이 오히려 바람직하지 못한 상대방(불량품 등)과 거래</span>하게 되는 현상.<br><br>因資訊不足,反而<span class="key">選到劣質交易對象</span>的情況。'},
+  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'신호발송과 선별(發送訊號與篩選)이란?', a:'<span class="key">정보 우위자</span>가 자신의 좋은 정보를 알리려는 행동(신호발송)과, <span class="key">정보 열위자</span>가 상대방의 정보를 캐내려는 행동(선별).<br><br><span class="key">資訊優勢方</span>主動展現好特質,<span class="key">資訊劣勢方</span>主動查核。'},
+  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'도덕적 해이(道德風險)란?', a:'계약 체결 후 <span class="key">정보 우위자가 감시를 피해 부주의하게 행동</span>하거나 자신의 의무를 다하지 않는 현상.<br><br>簽約後,資訊優勢方因<span class="key">缺乏監督而懈怠或不負責任</span>。'},
+  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'본인-대리인 관계(委託人-代理人關係)란?', a:'본인을 대신해 업무를 처리하는 대리인이 <span class="key">본인보다 자신의 이익을 위해 행동</span>함으로써 발생하는 문제 상황.<br><br>代理人<span class="key">為自己利益而非委託人利益行動</span>所產生的問題。'},
+
+  // 12장 - 시장과 정부
+  {ch:12, chName:'12장. 시장과 정부', type:'concept', q:'시장실패(市場失靈)란?', a:'시장의 가격기구가 <span class="key">자원을 효율적으로 배분하지 못하는 상태</span> (원인: 독점, 공공재, 외부효과 등).<br><br>市場價格機制<span class="key">無法有效分配資源</span>的狀態。'},
+  {ch:12, chName:'12장. 시장과 정부', type:'concept', q:'정부실패(政府失靈)란?', a:'시장실패를 교정하기 위한 정부의 개입이 <span class="key">오히려 비효율성을 초래하거나 더 나쁜 결과</span>를 가져오는 현상.<br><br>政府為了救市而介入,反而導致<span class="key">更無效率或更糟的結果</span>。'},
 ];
 
+// ── APP LOGIC (do not modify) ──
 const CHAPTERS=[...new Set(CARDS.map(c=>c.ch))];
 let selType='all';
 
@@ -397,7 +216,6 @@ function init(){
   document.getElementById('cntAll').textContent=CARDS.length+'장';
   document.getElementById('cntConcept').textContent=CARDS.filter(c=>c.type==='concept').length+'장';
   document.getElementById('cntCalc').textContent=CARDS.filter(c=>c.type==='calc').length+'장';
-  // 기본 선택 표시
   document.querySelector('.t-all').style.opacity='1';
 }
 
@@ -457,8 +275,6 @@ window.addEventListener('scroll',()=>{
 });
 
 init();
-// 기본 전체 선택 상태
-document.querySelector('.t-all').style.opacity='1';
 </script>
 </body>
 </html>
