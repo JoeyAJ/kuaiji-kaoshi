@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>경제학원론 시험 대비</title>
+<title>재무회계관리 기말고사</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{
@@ -102,7 +102,7 @@ html,body{
 
 <!-- 홈 화면 -->
 <div class="screen active" id="homeScreen">
-  <div class="home-title">경제학원론 시험 대비</div>
+  <div class="home-title">재무회계관리 기말고사</div>
   <div class="home-sub">챕터와 유형을 선택하세요</div>
   <div class="section-label">📂 챕터 선택</div>
   <div class="ch-grid" id="chGrid"></div>
@@ -144,58 +144,169 @@ html,body{
 <script>
 // ── CARD DATA ──
 const CARDS = [
-  // 1강 - 경제학 기초 개념
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'합리적 선택(合理選擇)이란?', a:'<span class="key">한계편익</span>(얻는 이익)이 <span class="key">한계비용</span>(포기하는 비용)보다 <span class="key">크거나 같을 때</span> 이루어지는 의사결정.<br><br>當<span class="key">邊際利益</span>大於或等於<span class="key">邊際成本</span>時所做出的決策。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'기회비용(機會成本)이란?', a:'어떤 선택을 함으로써 <span class="key">포기해야 하는 대안들 중에서 가장 가치가 큰 것</span>.<br><br>因為某個選擇而<span class="key">放棄的替代方案中,價值最高的那一個</span>。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'매몰비용(沉沒成本)이란?', a:'<span class="key">이미 지출되어 다시 회수할 수 없는 비용</span>으로, 합리적 의사결정 시 <span class="key">고려해서는 안 되는 비용</span>.<br><br>已經支出且<span class="key">無法回收</span>,在理性決策時<span class="key">不應考慮</span>的成本。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'미시경제이론(個體/微觀經濟理論)이란?', a:'<span class="key">가계, 기업 등 개별 경제주체</span>의 의사결정과 <span class="key">시장에서의 상호작용</span>을 연구하는 분야.<br><br>研究<span class="key">家戶、企業等個別經濟主體</span>的決策與<span class="key">市場互動</span>的領域。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'거시경제이론(總體/宏觀經濟理論)이란?', a:'<span class="key">물가, 실업, 경제성장</span> 등 <span class="key">국가 경제 전체의 움직임</span>을 연구하는 분야.<br><br>研究<span class="key">物價、失業、經濟成長</span>等<span class="key">國家整體經濟運作</span>的領域。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'국민경제내 경제주체들이란?', a:'경제활동을 수행하는 주체로 <span class="key">가계, 기업, 정부</span> 등을 일컫는 말.<br><br>執行經濟活動的主體,如<span class="key">家戶、企業、政府</span>等。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'생산가능곡선(生產可能曲線, PPF)이란?', a:'한 사회가 가진 <span class="key">모든 생산요소와 기술을 효율적으로 사용</span>하여 <span class="key">최대로 생산할 수 있는 두 재화의 조합</span>을 나타낸 곡선.<br><br>一個社會<span class="key">有效率地使用所有生產要素與技術</span>,所能生產的<span class="key">兩種財貨最大組合</span>曲線。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'시장경제(市場經濟)란?', a:'개별 경제주체들의 <span class="key">자유로운 의사결정</span>과 <span class="key">시장의 가격기구</span>에 의해 경제문제가 해결되는 체제.<br><br>由個別經濟主體<span class="key">自由決策</span>及<span class="key">市場價格機制</span>解決經濟問題的體制。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'통제경제(統制經濟/計畫經濟)란?', a:'<span class="key">국가(정부)의 중앙계획</span>에 의해 자원배분 등 주요 경제문제가 결정되는 체제.<br><br>由<span class="key">國家中央計畫</span>決定資源分配等經濟問題的體制。'},
-  {ch:1, chName:'1강. 경제학 기초 개념', type:'concept', q:'혼합경제(混合經濟)란?', a:'<span class="key">시장경제를 기본</span>으로 하면서 <span class="key">정부의 개입을 일부 허용</span>하는 경제체제.<br><br>以<span class="key">市場經濟為基礎</span>,<span class="key">部分允許政府介入</span>的經濟體制。'},
-
-  // 2강 - 수요와 공급
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'보이지 않는 손(看不見的手)이란?', a:'시장에서 <span class="key">가격기구</span>를 통해 <span class="key">개인의 이기적 행동이 사회 전체의 이익을 가져오는 원리</span> (애덤 스미스).<br><br>透過<span class="key">價格機制</span>,<span class="key">個人的自私行為帶來社會整體利益</span>的原理。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'시장과 교환(市場與交換)이란?', a:'<span class="key">재화와 서비스의 수요자와 공급자가 만나 거래가 이루어지는 곳</span>과 그 행위.<br><br><span class="key">供需雙方相遇進行交易的場所與行為</span>。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'가격/가격기구(價格/價格機制)란?', a:'시장에서 <span class="key">수요와 공급을 조절</span>하고 <span class="key">자원을 효율적으로 배분하는 신호</span> 역할을 하는 것.<br><br>在市場中<span class="key">調節供需</span>並作為<span class="key">有效分配資源訊號</span>的機制。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'수요의 법칙(需求法則)이란?', a:'가격이 상승하면 수요량이 감소하고, 가격이 하락하면 수요량이 증가하는 <span class="key">역(-)의 관계</span>.<br><br><span class="key">價格升需求降,價格降需求升</span>的反向關係。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'공급의 법칙(供給法則)이란?', a:'가격이 상승하면 공급량이 증가하고, 가격이 하락하면 공급량이 감소하는 <span class="key">정(+)의 관계</span>.<br><br><span class="key">價格升供給升,價格降供給降</span>的正向關係。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'수요의 가격탄력성(需求的價格彈性)이란?', a:'재화의 가격이 변동할 때, 그 재화의 <span class="key">수요량이 얼마나 민감하게 변하는지를 측정하는 척도</span>.<br><br>衡量價格變動時,<span class="key">需求量變動敏感度</span>的指標。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'소비자잉여(消費者剩餘)란?', a:'소비자가 <span class="key">지불할 용의가 있는 최대 금액</span>에서 <span class="key">실제로 지불한 금액을 뺀 차액</span>.<br><br>消費者<span class="key">願意支付的最高價格</span>減去<span class="key">實際支付的價格</span>。'},
-  {ch:2, chName:'2강. 수요와 공급, 시장의 균형', type:'concept', q:'생산자잉여(生產者剩餘)란?', a:'생산자가 <span class="key">실제로 받은 금액</span>에서 <span class="key">최소한 받아야 하겠다고 생각한 금액을 뺀 차액</span>.<br><br>生產者<span class="key">實際收到的金額</span>減去其<span class="key">願意接受的最低金額</span>。'},
-
-  // 4장 - 소비자의 선택
-  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'한계효용(邊際效用)이란?', a:'재화 <span class="key">1단위를 추가로 소비</span>할 때 얻게 되는 <span class="key">총효용의 증가분</span>.<br><br>增加消費<span class="key">一單位財貨</span>所帶來的<span class="key">總效用增加量</span>。'},
-  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'한계효용체감의 법칙(邊際效用遞減法則)이란?', a:'재화의 소비량이 증가함에 따라 추가적으로 얻는 <span class="key">한계효용이 점차 감소</span>하는 현상.<br><br>隨消費量增加,<span class="key">邊際效用逐漸遞減</span>的現象。'},
-  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'대체효과(替代效應)란?', a:'상대가격의 변화로 인해 <span class="key">상대적으로 비싸진 재화의 소비를 줄이고 저렴해진 재화의 소비를 늘리는 효과</span>.<br><br>因相對價格改變,<span class="key">少買變貴的、多買變便宜</span>的效應。'},
-  {ch:4, chName:'4장. 소비자의 선택', type:'concept', q:'소득효과(所得效應)란?', a:'가격 하락으로 소비자의 <span class="key">실질소득이 증가한 것과 같은 효과</span>가 발생하여 수요량이 변하는 현상.<br><br>價格下降導致<span class="key">實質所得增加</span>,進而改變需求量的效應。'},
-
-  // 5장 - 기업의 생산활동
-  {ch:5, chName:'5장. 기업의 생산활동', type:'concept', q:'한계생산체감의 법칙(邊際產量遞減法則)이란?', a:'다른 생산요소는 고정시키고 <span class="key">한 요소를 계속 추가 투입</span>할 때, 어느 시점부터는 <span class="key">한계생산량이 감소</span>하는 현상.<br><br>固定其他要素,不斷增加單一要素投入,<span class="key">邊際產量終將減少</span>的現象。'},
-
-  // 6-7장 - 시장구조
-  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'완전경쟁시장(完全競爭市場)이란?', a:'<span class="key">수많은 수요자와 공급자</span>, <span class="key">동질적 상품</span>, <span class="key">진입과 탈퇴의 자유</span>, <span class="key">완전한 정보</span>를 특징으로 하는 시장.<br><br><span class="key">買賣方眾多、產品同質、進出自由、資訊完全</span>。'},
-  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'독점시장(獨占市場)이란?', a:'<span class="key">단 하나의 공급자만 존재</span>하며 대체재가 없어 기업이 <span class="key">가격설정자</span>가 되는 시장.<br><br><span class="key">單一供給者、無替代品、為價格決定者</span>。'},
-  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'독점경쟁시장(獨占性競爭市場)이란?', a:'다수의 공급자가 존재하지만, <span class="key">\'제품 차별화\'</span>를 통해 각 기업이 어느 정도 독점력을 가지는 시장.<br><br>供給者多,但透過<span class="key">「產品差異化」</span>擁有部分獨占力。'},
-  {ch:6, chName:'6-7장. 시장구조', type:'concept', q:'과점시장(寡占市場)이란?', a:'<span class="key">소수의 기업</span>이 시장을 장악하며, 기업 간의 <span class="key">\'상호의존성\'이 매우 높은 시장</span>.<br><br><span class="key">少數企業</span>掌控,企業間<span class="key">「相互依存度」極高</span>。'},
-
-  // 8장 - 게임과 전략
-  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'게임이론(賽局理論)이란?', a:'<span class="key">상호 의존적인 상황</span>에서 각 주체가 자신의 이익을 극대화하기 위해 어떤 <span class="key">전략적 의사결정</span>을 내리는지 분석하는 이론.<br><br>分析在<span class="key">相互依存情況</span>下,主體如何做出<span class="key">戰略決策</span>的理論。'},
-  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'용의자의 딜레마(囚徒困境)란?', a:'상호 협력하면 더 좋은 결과를 얻을 수 있음에도, <span class="key">개인의 합리적 선택이 결국 모두에게 나쁜 결과를 초래</span>하는 상황.<br><br>合作能更好,但<span class="key">個人理性選擇導致雙贏破局</span>的情況。'},
-  {ch:8, chName:'8장. 게임과 전략', type:'concept', q:'승자의 불행(贏家的詛咒)이란?', a:'경매 등에서 경쟁자를 이기고 대상을 차지했지만, <span class="key">실제 가치보다 너무 높은 가격을 지불하여 손해</span>를 보는 현상.<br><br>在拍賣中贏了,卻因<span class="key">出價過高而虧損</span>。'},
-
-  // 11장 - 정보경제이론
-  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'비대칭 정보(資訊不對稱)란?', a:'거래 당사자 중 <span class="key">한쪽이 다른 쪽보다 대상에 대해 더 많은 정보를 가지고 있는 상황</span>.<br><br>交易<span class="key">一方掌握的資訊多於另一方</span>。'},
-  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'역선택(逆向選擇)이란?', a:'정보 비대칭으로 인해 <span class="key">정보가 부족한 쪽이 오히려 바람직하지 못한 상대방(불량품 등)과 거래</span>하게 되는 현상.<br><br>因資訊不足,反而<span class="key">選到劣質交易對象</span>的情況。'},
-  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'신호발송과 선별(發送訊號與篩選)이란?', a:'<span class="key">정보 우위자</span>가 자신의 좋은 정보를 알리려는 행동(신호발송)과, <span class="key">정보 열위자</span>가 상대방의 정보를 캐내려는 행동(선별).<br><br><span class="key">資訊優勢方</span>主動展現好特質,<span class="key">資訊劣勢方</span>主動查核。'},
-  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'도덕적 해이(道德風險)란?', a:'계약 체결 후 <span class="key">정보 우위자가 감시를 피해 부주의하게 행동</span>하거나 자신의 의무를 다하지 않는 현상.<br><br>簽約後,資訊優勢方因<span class="key">缺乏監督而懈怠或不負責任</span>。'},
-  {ch:11, chName:'11장. 정보경제이론', type:'concept', q:'본인-대리인 관계(委託人-代理人關係)란?', a:'본인을 대신해 업무를 처리하는 대리인이 <span class="key">본인보다 자신의 이익을 위해 행동</span>함으로써 발생하는 문제 상황.<br><br>代理人<span class="key">為自己利益而非委託人利益行動</span>所產生的問題。'},
-
-  // 12장 - 시장과 정부
-  {ch:12, chName:'12장. 시장과 정부', type:'concept', q:'시장실패(市場失靈)란?', a:'시장의 가격기구가 <span class="key">자원을 효율적으로 배분하지 못하는 상태</span> (원인: 독점, 공공재, 외부효과 등).<br><br>市場價格機制<span class="key">無法有效分配資源</span>的狀態。'},
-  {ch:12, chName:'12장. 시장과 정부', type:'concept', q:'정부실패(政府失靈)란?', a:'시장실패를 교정하기 위한 정부의 개입이 <span class="key">오히려 비효율성을 초래하거나 더 나쁜 결과</span>를 가져오는 현상.<br><br>政府為了救市而介入,反而導致<span class="key">更無效率或更糟的結果</span>。'},
+  // ═══════════════════════════════════════════════════════════
+  // Chapter 12 - 재무제표분석 (I)
+  // ═══════════════════════════════════════════════════════════
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'1. 추세분석', 
+    a:'재무제표의 수치를 과거의 수치와 비교해서 <span class="key">증가율 또는 감소율을 분석</span>'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'2. 추세분석 지표', 
+    a:'<span class="key">매출액성장율</span>, <span class="key">총자산성장율</span>'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'3. 구성비분석(common-size analysis)', 
+    a:'각 항목이 전체에서 차지하는 <span class="key">비중</span>을 분석<br><br>1) 재무상태표 항목은 <span class="key">총자산에 대한 비율</span>로 표시<br><br>2) 손익계산서 항목은 <span class="key">매출액에 대한 비율</span>로 표시'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'4. 구성비분석의 장점', 
+    a:'1) 자산과 부채의 항목, 수익과 비용의 항목이 <span class="key">어떻게 구성되었는지 파악</span>할 수 있음<br><br>2) <span class="key">기업규모가 다른 여러 기업들간의 비교가 용이</span>함'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'5. 비율분석', 
+    a:'재무제표 항목들간의 관계를 분석<br><br>1) <span class="key">주주</span>: 성장성 및 수익성 비율에 관심이 큼<br><br>2) <span class="key">단기채권자</span>: 유동성 비율에 관심이 큼<br><br>3) <span class="key">장기채권자</span>: 유동성 비율뿐 아니라 안전성 및 수익성 비율에도 관심 있음'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'6. 수익성', 
+    a:'기업이 이익을 창출할 수 있는 능력<br><br>1) <span class="formula">매출액총이익율 = 매출총이익 / 매출액</span><br><br>2) <span class="formula">총자산이익율 = 이자비용차감전이익 / 평균총자산</span> 또는 <span class="formula">당기순이익 / 평균총자산</span><br><br>3) <span class="formula">자본이익율 = 당기순이익 / 평균자본</span><br><br>4) <span class="formula">주당이익 = (당기순이익 - 우선주배당금) / 가중평균유통주식수</span><br><br>5) <span class="formula">PER(Price-Earnings Ratio) = 주가 / 주당이익</span>'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'7. 활동성', 
+    a:'기업이 보유한 자산을 얼마나 효율적으로 사용하는지를 측정<br><br>1) <span class="formula">매출채권회전율 = 매출액 / 평균매출채권</span><br><br>2) <span class="formula">매출채권평균회수기간 = 365 / 매출채권회전율</span><br><br>3) <span class="formula">재고자산회전율 = 매출원가 / 평균재고자산</span><br><br>4) <span class="formula">재고자산평균회전기간 = 365 / 재고자산회전율</span><br><br>5) <span class="formula">총자산회전율 = 매출액 / 평균총자산</span>'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'8. 유동성', 
+    a:'자산을 현금화할 수 있는 능력<br><br>1) <span class="formula">유동비율 = 유동자산 / 유동부채</span><br><br>2) <span class="formula">당좌비율 = 당좌자산 / 유동부채</span><br><br>3) <span class="formula">당좌자산 = 유동자산 - 재고자산</span>'},
+  
+  {ch:12, chName:'I. 재무제표분석 (12장)', type:'concept', 
+    q:'9. 안전성', 
+    a:'장기채무를 상환할 수 있는 능력<br><br>1) <span class="formula">부채비율 = 총부채 / 자기자본</span><br><br>2) <span class="formula">이자보상비율 = 이자비용차감전이익 / 이자비용</span>'},
+  
+  // ═══════════════════════════════════════════════════════════
+  // Chapter 9 - 금융자산 (II)
+  // ═══════════════════════════════════════════════════════════
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'1. 지분투자 vs. 채권투자', 
+    a:'1) <span class="key">지분투자</span>: 주식, 배당금 및 처분이익 목적, 만기 없음, 원금보장 없음<br><br>2) <span class="key">채권투자</span>: 회사채 및 국채, 이자수익 및 처분이익 목적, 만기 존재, 만기에 원금 상환받음'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'2. 채무상품', 
+    a:'1) <span class="key">상각후원가측정금융자산(AC금융자산)</span>: 만기까지 보유할 목적으로 취득한 채권<br>&nbsp;&nbsp;&nbsp;- AC: amortized cost<br><br>2) <span class="key">기타포괄손익-공정가치금융자산(FVOCI금융자산)</span>: 이자를 수취하다가 만기이전에 매각하여 시세차익을 얻기 위해 취득한 채권<br>&nbsp;&nbsp;&nbsp;- FV: fair value, OCI: other comprehensive income<br><br>3) <span class="key">당기손익-공정가치측정금융자산(FVPL금융자산)</span>: 단기간 보유하다가 매도하여 시세차익을 목적으로 취득한 채권<br>&nbsp;&nbsp;&nbsp;- PL: profit or loss'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'3. 지분상품', 
+    a:'1) <span class="key">기타포괄손익-공정가치측정금융자산(FVOCI금융자산)</span>: 장기보유 목적으로 취득한 주식<br><br>2) <span class="key">당기손익-공정가치측정금융자산(FVPL금융자산)</span>: 단기매매목적으로 취득한 주식'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'4. 관계기업투자주식', 
+    a:'경영권에 대해 <span class="key">영향력을 행사할 목적</span>으로 취득한 주식<br><br>- <span class="key">지분법</span>: 다른 기업 지분 <span class="num">20% 이상</span>을 소유'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'5. 금융자산 평가손익 회계처리', 
+    a:'1) <span class="key">AC금융자산</span>: 만기까지 보유해서 만기에 액면금액을 상환받을 것이므로 보유기간 공정가치 변동은 평가손익으로 인식하지 않음<br><br>2) <span class="key">FVOCI금융자산</span>: 공정가치 변동에 의해 발생한 평가손익을 포괄손익계산서상의 기타포괄손익 항목으로 인식, 장기간 보유하므로 공정가치의 변동을 매 회계기간의 당기손익으로 반영할 필요 없음<br><br>3) <span class="key">FVPL금융자산</span>: 공정가치변동에 의해 발생한 평가손익을 당기손익으로 인식'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'6. 관계기업 투자', 
+    a:'1) 피투자회사의 의결권 있는 주식을 <span class="num">20% 이상</span> 보유하는 경우, 피투자회사를 <span class="key">관계기업</span>이라고 함<br><br>2) 관계기업 투자에는 <span class="key">지분법(equity method)</span>을 적용하여 회계처리함<br><br>3) 피투자회사가 당기순이익을 보고하면 투자회사는 지분율에 해당하는 금액만큼을 <span class="key">지분법이익</span>으로 기록하고 <span class="key">투자주식의 가액을 그만큼 증가</span>시킴<br><br>4) 투자회사가 피투자회사로부터 배당금을 수령하게 되면 수령한 배당금만큼 <span class="key">투자주식의 장부금액을 감소</span>시킴'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'calc', 
+    q:'7. 다음을 분개하라<br><br>1) ㈜우송은 2025년 1월 1일 ㈜대전의 총주식(10,000주)의 20%인 2,000주를 주당 1,000원에 취득하였다.', 
+    a:'<span class="num">2,000주 × 1,000원 = 2,000,000</span><br><br><span class="entry debit">(차) 관계기업투자주식　2,000,000</span><span class="entry credit">(대) 현금　2,000,000</span>'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'calc', 
+    q:'7. 다음을 분개하라<br><br>2) 2025년 12월 31일 ㈜대전은 2025년도 당기순이익을 1,000,000원을 보고하였다. ㈜우송의 이에 대한 분개를 하라.', 
+    a:'<span class="num">1,000,000원 × 20% = 200,000</span><br><br><span class="entry debit">(차) 관계기업투자주식　200,000</span><span class="entry credit">(대) 지분법이익　200,000</span>'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'calc', 
+    q:'7. 다음을 분개하라<br><br>3) 2026년 3월 15일 ㈜대전은 2025년도 당기순이익의 50%를 배당으로 지급하였다. ㈜우송의 이에 대한 분개를 하라.', 
+    a:'<span class="num">1,000,000원 × 50% = 500,000, 500,000원 × 20% = 100,000</span><br><br><span class="entry debit">(차) 현금　100,000</span><span class="entry credit">(대) 관계기업투자주식　100,000</span>'},
+  
+  {ch:9, chName:'II. 금융자산(9장)', type:'concept', 
+    q:'4. 종속기업 투자', 
+    a:'1) 투자회사가 피투자회사의 의결권 있는 주식의 <span class="num">50% 이상</span>을 소유하거나 실질적 지배력을 행사하는 경우 투자회사를 <span class="key">지배기업</span>, 피투자회사를 <span class="key">종속기업</span>이라고 함<br><br>2) 지배기업과 종속기업은 법률적으로는 별도의 회사이지만 실질적으로 하나의 경제적 실체이므로 지배기업과 종속기업의 재무제표를 <span class="key">세부항목별로 합산</span>한 <span class="key">연결재무제표</span>를 작성함'},
+  
+  // ═══════════════════════════════════════════════════════════
+  // Chapter 10 - 자본 (III)
+  // ═══════════════════════════════════════════════════════════
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'1. 기업의 자금조달의 원천', 
+    a:'<span class="key">타인자본(부채)</span>과 <span class="key">자기자본(자본)</span>'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'2. 자기자본', 
+    a:'1) 기업의 자산에서 채권자지분을 차감하고 남은 <span class="key">잔여지분</span> 또는 <span class="key">순자산</span>이라고 함<br><br>2) <span class="formula">자본 = 납입자본 + 이익잉여금 + 기타자본</span><br><br>3) <span class="formula">납입자본 = 자본금 + 자본잉여금</span><br><br>4) <span class="formula">자본잉여금 = 주식발행초과금 + 기타자본잉여금</span><br><br>5) <span class="formula">이익잉여금 = 법정적립금 + 임의적립금 + 미처분이익잉여금</span><br><br>6) <span class="formula">기타자본 = 자본조정 + 기타포괄손익누계액</span><br><br>7) <span class="formula">자본조정 = 자기주식 + 기타자본조정</span>'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'3. 주식의 종류', 
+    a:'1) <span class="key">보통주</span>: 주주총회에서 의결권을 행사할 수 있음<br><br>2) <span class="key">우선주</span>: 이익배당이나 청산으로 인한 잔여재산의 분배에 대한 권리를 보통주보다 우선적으로 보장받을 수 있으나 의결권이 없음'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'4. 주식배당', 
+    a:'이익잉여금을 처분하여 자본금으로 대체시키면서 신주발행'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'5. 주식분할: 액면금액 1,000원인 보통주 10,000주를 발행한 회사가 1대 10으로 액면분할을 하면', 
+    a:'1) 1주당 액면금액은 <span class="num">100원으로 감소</span><br><br>2) 발행주식수는 <span class="num">100,000주</span>가 됨<br><br>3) 주식분할전 주가가 10,000원이었다면 주식분할 후 주가는 <span class="num">1,000원</span>이 됨<br><br>4) <span class="key">자본금은 액면분할과 상관없이 동일</span>함'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'6. 배당', 
+    a:'기업이 창출한 이익 중 일부를 주주들에게 분배'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'calc', 
+    q:'7. 다음을 분개하라<br><br>1) 2026년 3월 1일 주주총회에서 1,000,000원을 배당하기로 의결하였다.', 
+    a:'<span class="entry debit">(차) 이익잉여금　1,000,000</span><span class="entry credit">(대) 미지급배당금　1,000,000</span>'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'calc', 
+    q:'7. 다음을 분개하라<br><br>2) 2026년 3월 30일 배당금을 현금으로 주주에게 지급하였다.', 
+    a:'<span class="entry debit">(차) 미지급배당금　1,000,000</span><span class="entry credit">(대) 현금　1,000,000</span>'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'8. 자기주식', 
+    a:'회사가 주주에게 발행한 주식 중 일부를 취득하여 보유하고 있는 주식<br><br>1) 자기주식을 취득원가보다 <span class="key">높은 금액으로 처분</span>하면 초과금액을 <span class="key">자기주식처분이익</span>으로 처리하고 <span class="key">기타자본잉여금</span>에 속함<br><br>2) 자기주식을 취득원가보다 <span class="key">낮은 금액으로 처분</span>하여 차액을 우선적으로 자기주식처분이익과 상계하고 잔여분을 <span class="key">자기주식처분손실</span>로 처리하고 <span class="key">자본조정</span>에 속함'},
+  
+  {ch:10, chName:'III. 자본(10장)', type:'concept', 
+    q:'9. 포괄이익', 
+    a:'<span class="formula">포괄이익 = 당기순이익 + 기타포괄이익</span>'},
+  
+  // ═══════════════════════════════════════════════════════════
+  // Chapter 11 - 현금흐름표 (IV)
+  // ═══════════════════════════════════════════════════════════
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'1. 현금흐름', 
+    a:'<span class="formula">현금흐름 = 영업활동 현금흐름 + 투자활동 현금흐름 + 재무활동 현금흐름</span>'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'2. 기초현금+당기현금흐름=기말현금', 
+    a:'<span class="formula">기초현금 + 당기현금흐름 = 기말현금</span>'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'3. 현금흐름정보의 중요성', 
+    a:'1) <span class="key">경영의사결정</span><br><br>2) <span class="key">미래현금흐름의 예측</span><br><br>3) <span class="key">재무건전성 파악</span><br><br>4) <span class="key">이익의 질 평가</span>'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'4. 현금흐름의 분류', 
+    a:'1) <span class="key">영업활동 현금흐름</span>: 기업의 수익창출활동으로부터 발생하는 현금흐름<br><br>2) <span class="key">투자활동 현금흐름</span>: 유형자산, 무형자산, 장기금융자산의 취득과 처분에 관련된 현금흐름<br><br>3) <span class="key">재무활동 현금흐름</span>: 기업의 자금조달 및 이에 대한 대가를 지급하는 현금흐름'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'5. 영업활동으로 인한 자산과 부채의 변동-> 간접법에서의 영업현금흐름 계산에 반영', 
+    a:'1) 매출채권, 재고자산이 <span class="key">증가</span>한 경우: 영업현금흐름 계산에서 당기순이익에서 <span class="key">차감</span><br><br>2) 매출채권, 재고자산이 <span class="key">감소</span>한 경우: 영업현금흐름 계산에서 당기순이익에서 <span class="key">가산</span><br><br>3) 매입채무가 <span class="key">증가</span>한 경우: 영업현금흐름 계산에서 당기순이익에서 <span class="key">가산</span><br><br>4) 매입채무가 <span class="key">감소</span>한 경우: 영업현금흐름 계산에서 당기순이익에서 <span class="key">차감</span>'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'6. 당기순이익 정보와 현금흐름 정보 중 어떤 것이 더 신뢰성이 높은가?', 
+    a:'<span class="key">현금흐름</span>'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'7. 기업수명주기', 
+    a:'1) <span class="key">창업단계</span>: <span class="num">-</span>영업현금흐름, <span class="num">-</span>투자현금흐름, <span class="num">+</span>재무현금흐름<br><br>2) <span class="key">성장단계</span>: <span class="num">+</span>영업현금흐름, <span class="num">-</span>투자현금흐름, <span class="num">+</span>재무현금흐름<br><br>3) <span class="key">성숙단계</span>: <span class="num">+</span>영업현금흐름, <span class="num">-</span>투자현금흐름, <span class="num">-</span>재무현금흐름<br><br>4) <span class="key">쇠퇴단계</span>: <span class="num">-</span>영업현금흐름, <span class="num">+</span>투자현금흐름, <span class="num">-</span>재무현금흐름'},
+  
+  {ch:11, chName:'IV. 현금흐름표 (11장)', type:'concept', 
+    q:'8. 현금흐름표의 이상징후', 
+    a:'1) <span class="key">이익은 증가추세, 영업현금흐름은 감소추세</span>: 이익의 질 저하, 분식 의심<br><br>2) <span class="key">재고자산의 급증</span>: 매출감소, 과잉생산<br><br>3) <span class="key">매출채권의 급증</span>: 신용도가 낮은 고객에게 판매, 공격적 마케팅<br><br>4) <span class="key">매입채무의 급증</span>: 현금지급능력의 소진'},
 ];
 
 // ── APP LOGIC (do not modify) ──
